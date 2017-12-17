@@ -3,5 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:event) { create :event }
+
+  describe 'validations' do
+    it { expect(event).to be_valid }
+
+    it 'is invalid without name' do
+      event.name = nil
+      expect(event).to be_invalid
+    end
+
+    it 'is invalid without occurs_at' do
+      event.occurs_at = nil
+      expect(event).to be_invalid
+    end
+  end
 end
