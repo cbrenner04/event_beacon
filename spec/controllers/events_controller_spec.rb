@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe EventsController do
-  let!(:user) { create :user }
-  let!(:other_user) { create :user }
-  let!(:event) { create :event, name: 'foo' }
-  let!(:other_event) { create :event, name: 'bar' }
-  let!(:users_event) { create :users_event, user: user, event: event }
-  let!(:other_users_event) do
-    create :users_event, user: other_user, event: other_event
-  end
+  let(:user) { create :user }
+  let(:other_user) { create :user }
+  let(:event) { create :event, name: 'foo' }
+  let(:other_event) { create :event, name: 'bar' }
 
-  before { sign_in user }
+  before do
+    create :users_event, user: user, event: event
+    create :users_event, user: other_user, event: other_event
+    sign_in user
+  end
 
   describe 'GET #index' do
     it 'returns events for current_user only' do

@@ -23,7 +23,11 @@ gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'capybara', '~> 2.16', '>= 2.16.1'
+  gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
   gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
+  gem 'launchy', '~> 2.4', '>= 2.4.3'
+  gem 'poltergeist', '~> 1.17'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'
   gem 'rspec-rails', '~> 3.7', '>= 3.7.2'
 end

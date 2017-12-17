@@ -4,7 +4,7 @@
 class Experience < ApplicationRecord
   belongs_to :event
 
-  has_one :notification
+  has_one :notification, dependent: :destroy
 
   validates :name, :occurs_at, presence: true
 end
