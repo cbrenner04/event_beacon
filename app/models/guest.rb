@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# guests of the top-level event
 class Guest < ApplicationRecord
   belongs_to :event
 

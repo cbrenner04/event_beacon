@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# guest / notification join table
 class GuestsNotification < ApplicationRecord
   belongs_to :guest
   belongs_to :notification

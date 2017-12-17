@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # devise User
 class User < ApplicationRecord
   # Include default devise modules. Others available are:

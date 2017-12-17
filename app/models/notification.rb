@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# notification for experiences
 class Notification < ApplicationRecord
   belongs_to :experience
 

@@ -8,6 +8,6 @@ class CreateUsersEvents < ActiveRecord::Migration[5.1]
 
     add_index :users_events, :user_id
     add_index :users_events, :event_id
-    add_index(:users_events, [:user_id, :event_id], unique: true)
+    add_index(:users_events, %i[user_id event_id], unique: true)
   end
 end

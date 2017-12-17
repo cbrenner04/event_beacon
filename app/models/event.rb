@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# top-level event (i.e. wedding)
 class Event < ApplicationRecord
   has_many :experiences
   has_many :guests

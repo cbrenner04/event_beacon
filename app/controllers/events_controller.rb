@@ -1,4 +1,6 @@
-# no doc
+# frozen_string_literal: true
+
+# events controller
 class EventsController < ApplicationController
   def index
     @events = current_user.events
