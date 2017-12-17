@@ -1,0 +1,23 @@
+<h1><%= @event.name %> Guests</h1>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+      <th>Notification Type</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @event.guests.each do |guest| %>
+      <tr>
+        <td><%= guest.full_name %></td>
+        <td><%= guest.email %></td>
+        <td><%= guest.phone_number %></td>
+        <td><%= guest.notification_category %></td>
+        <td><%= link_to "", edit_event_guest_path(@event, guest), class: "fa fa-pencil" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

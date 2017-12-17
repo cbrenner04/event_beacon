@@ -10,10 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212032854) do
+ActiveRecord::Schema.define(version: 20171216223739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "occurs_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "experiences", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "occurs_at", null: false
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_experiences_on_event_id"
+  end
+
+  create_table "guests", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone_number"
+    t.string "email"
+    t.integer "notification_category"
+    t.bigint "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_guests_on_event_id"
+  end
+
+  create_table "guests_notifications", force: :cascade do |t|
+    t.integer "guest_id", null: false
+    t.integer "notification_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id", "notification_id"], name: "index_guests_notifications_on_guest_id_and_notification_id", unique: true
+    t.index ["guest_id"], name: "index_guests_notifications_on_guest_id"
+    t.index ["notification_id"], name: "index_guests_notifications_on_notification_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.text "sms_body", null: false
+    t.text "email_body", null: false
+    t.bigint "experience_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["experience_id"], name: "index_notifications_on_experience_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -32,4 +79,17 @@ ActiveRecord::Schema.define(version: 20171212032854) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "users_events", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_users_events_on_event_id"
+    t.index ["user_id", "event_id"], name: "index_users_events_on_user_id_and_event_id", unique: true
+    t.index ["user_id"], name: "index_users_events_on_user_id"
+  end
+
+  add_foreign_key "experiences", "events"
+  add_foreign_key "guests", "events"
+  add_foreign_key "notifications", "experiences"
 end
