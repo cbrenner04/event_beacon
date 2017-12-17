@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :notification do
-    sms_body 'MyText'
-    email_body 'MyText'
+    sms_body 'Fake sms body'
+    email_body 'Fake email body'
     experience
   end
 end

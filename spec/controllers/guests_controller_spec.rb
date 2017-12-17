@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe GuestsController do
   let(:user) { create :user }
   let(:event) { create :event }
-  let(:guest) { create :guest }
+  let!(:guest) { create :guest, event: event }
 
   before { sign_in user }
 
@@ -16,6 +16,14 @@ RSpec.describe GuestsController do
       }
 
       expect(assigns(:event)).to eq event
+    end
+
+    it 'assigns related guests as @guests' do
+      get :index, params: {
+        event_id: event.id
+      }
+
+      expect(assigns(:guests)).to include guest
     end
   end
 

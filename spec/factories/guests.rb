@@ -2,10 +2,10 @@
 
 FactoryBot.define do
   factory :guest do
-    first_name 'MyString'
-    last_name 'MyString'
-    email 'MyString'
-    phone_number 'MyString'
+    first_name 'Foo'
+    last_name 'Bar'
+    sequence(:email) { |n| "foo#{n}@bar.com" }
+    sequence(:phone_number) { |n| "123#{n}" }
     notification_category nil
     event
   end

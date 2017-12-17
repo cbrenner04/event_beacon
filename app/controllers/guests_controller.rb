@@ -4,6 +4,7 @@
 class GuestsController < ApplicationController
   def index
     @event = Event.find(params[:event_id])
+    @guests = @event.guests
   end
 
   def edit
