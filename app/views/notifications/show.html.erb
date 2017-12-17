@@ -2,6 +2,8 @@
 
 <h1>Notification for <%= @experience.name %></h1>
 
+<%= link_to "Edit", edit_event_experience_notification_path(@event, @experience, @notification) %>
+
 <h2>SMS Body</h2>
 <%= @notification.sms_body %>
 

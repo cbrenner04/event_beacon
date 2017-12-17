@@ -40,5 +40,20 @@ RSpec.describe 'Experiences', type: :feature do
     it 'displays experience' do
       expect(page).to have_text experience.name
     end
+
+    it 'allows for updating experience information' do
+      fill_in 'Name', with: 'Foobar in the morning'
+      click_on 'Save'
+      expect(current_path).to eq "/events/#{event.id}/experiences"
+      expect(page).to have_text 'Foobar in the morning'
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      fill_in 'Name', with: ''
+      click_on 'Save'
+      expect(page).to have_text '1 error prohibited this experience from ' \
+                                'being saved:'
+      expect(page).to have_text "Name can't be blank"
+    end
   end
 end

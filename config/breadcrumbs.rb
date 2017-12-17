@@ -31,3 +31,9 @@ crumb :notification do |event, experience, notification|
        event_experience_notification_path(event, experience, notification)
   parent :experiences, event
 end
+
+crumb :edit_notification do  |event, experience, notification|
+  link "Edit #{experience.name} Notification",
+       edit_event_experience_notification_path(event, experience, notification)
+  parent :notification, event, experience, notification
+end

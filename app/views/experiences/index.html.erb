@@ -14,7 +14,7 @@
     <% @event.experiences.each do |experience| %>
       <tr>
         <td><%= experience.name %></td>
-        <td><%= experience.occurs_at.localtime.strftime('%m/%d/%Y %I:%M %P') %></td>
+        <td><%= experience.occurs_at.strftime('%m/%d/%Y %I:%M %P') %></td>
         <td><%= link_to "Notification", event_experience_notification_path(@event, experience, experience.notification) %></td>
         <td><%= link_to "", edit_event_experience_path(@event, experience), class: "fa fa-pencil" %></td>
       </tr>

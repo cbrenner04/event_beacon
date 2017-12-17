@@ -31,6 +31,13 @@ RSpec.describe 'Experiences', type: :feature do
       expect(page).to have_text guest.full_name
     end
 
+    it 'links to edit page' do
+      click_on 'Edit'
+      expect(current_path).to eq "/events/#{event.id}/experiences/" \
+                                 "#{experience.id}/notifications/" \
+                                 "#{notification.id}/edit"
+    end
+
     it 'links to guest edit page' do
       find('tr', text: guest.first_name).find('.fa-pencil').click
       expect(current_path)
@@ -43,6 +50,36 @@ RSpec.describe 'Experiences', type: :feature do
       end
       page.refresh
       expect(page).to have_no_text guest.first_name
+    end
+  end
+
+  describe 'edit' do
+    before do
+      visit edit_event_experience_notification_path(event, experience,
+                                                    notification)
+    end
+
+    it 'displays guest' do
+      expect(page).to have_text notification.sms_body
+    end
+
+    it 'allows for updating guest information' do
+      fill_in 'Sms body', with: 'SMS FOOBAR BODY'
+      fill_in 'Email body', with: 'EMAIL FOOBAZ BODY'
+      click_on 'Save'
+      expect(current_path).to eq "/events/#{event.id}/experiences/" \
+                                 "#{experience.id}/notifications/" \
+                                 "#{notification.id}"
+      expect(page).to have_text 'SMS FOOBAR BODY'
+      expect(page).to have_text 'EMAIL FOOBAZ BODY'
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      fill_in 'Sms body', with: ''
+      click_on 'Save'
+      expect(page).to have_text '1 error prohibited this notification from ' \
+                                'being saved:'
+      expect(page).to have_text "Sms body can't be blank"
     end
   end
 end

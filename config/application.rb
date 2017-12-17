@@ -29,5 +29,7 @@ module BrennoraNotifier
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    # set the damn timezone
+    config.time_zone = 'Central Time (US & Canada)'
   end
 end

@@ -29,4 +29,33 @@ RSpec.describe ExperiencesController do
       expect(assigns(:experience)).to eq experience
     end
   end
+
+  describe 'PATCH #update' do
+    context 'with valid params' do
+      it 'updates experience' do
+        patch :update, params: {
+          event_id: event.id,
+          id: experience.id,
+          experience: {
+            name: 'foobaz'
+          }
+        }
+        experience.reload
+        expect(experience.name).to eq 'foobaz'
+      end
+    end
+
+    context 'with invalid params' do
+      it 're-renders edit' do
+        patch :update, params: {
+          event_id: event.id,
+          id: experience.id,
+          experience: {
+            name: nil
+          }
+        }
+        expect(response).to render_template :edit
+      end
+    end
+  end
 end

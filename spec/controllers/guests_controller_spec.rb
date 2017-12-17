@@ -37,4 +37,35 @@ RSpec.describe GuestsController do
       expect(assigns(:guest)).to eq guest
     end
   end
+
+  describe 'PATCH #update' do
+    context 'with valid params' do
+      it 'updates guest' do
+        patch :update, params: {
+          event_id: event.id,
+          id: guest.id,
+          guest: {
+            first_name: 'foobar',
+            last_name: 'baz'
+          }
+        }
+        guest.reload
+        expect(guest.full_name).to eq 'foobar baz'
+      end
+    end
+
+    context 'with invalid params' do
+      it 're-renders edit' do
+        patch :update, params: {
+          event_id: event.id,
+          id: guest.id,
+          guest: {
+            first_name: nil,
+            last_name: nil
+          }
+        }
+        expect(response).to render_template :edit
+      end
+    end
+  end
 end
