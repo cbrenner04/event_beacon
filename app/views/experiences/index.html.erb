@@ -1,6 +1,9 @@
 <% breadcrumb :experiences, @event %>
 
 <h1><%= @event.name %> Experiences</h1>
+
+<%= link_to "Add", new_event_experience_path(@event) %>
+
 <table class="table table-striped table-hover">
   <thead>
     <tr>

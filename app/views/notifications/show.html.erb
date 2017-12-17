@@ -11,6 +11,9 @@
 <%= @notification.email_body %>
 
 <h2>Guests</h2>
+
+<%= link_to "Add guests", new_event_experience_notification_guests_notification_path(@event, @experience, @notification) %>
+
 <table class="table table-striped table-hover">
   <thead>
     <tr>

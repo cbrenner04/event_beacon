@@ -1,0 +1,18 @@
+<% breadcrumb :new_guests_notification, @event, @experience, @notification %>
+
+<h1>Add guests to <%= @experience.name %> notification</h1>
+
+<%= form_for :guests_notifications, url: event_experience_notification_guests_notifications_path(@event, @experience, @notification), method: :post do |f| %>
+  <div class="row">
+    <%= f.collection_check_boxes(:guest_ids, @event.guests.all, :id, :full_name) do |b| %>
+      <div class="col-4">
+        <%= b.check_box %>
+        <%= b.label do %>
+          <%= b.object.full_name %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification) %>
+<% end %>

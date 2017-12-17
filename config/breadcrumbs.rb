@@ -16,6 +16,11 @@ crumb :edit_guest do |event, guest|
   parent :guests, event
 end
 
+crumb :new_guest do |event, guest|
+  link "Add guest", new_event_guest_path(event)
+  parent :guests, event
+end
+
 crumb :experiences do |event|
   link "Experiences", event_experiences_path(event)
   parent :event, event
@@ -23,6 +28,11 @@ end
 
 crumb :edit_experience do |event, experience|
   link "Edit #{experience.name}", edit_event_experience_path(event, experience)
+  parent :experiences, event
+end
+
+crumb :new_experience do |event, experience|
+  link "Add experience", new_event_experience_path(event)
   parent :experiences, event
 end
 
@@ -35,5 +45,13 @@ end
 crumb :edit_notification do  |event, experience, notification|
   link "Edit #{experience.name} Notification",
        edit_event_experience_notification_path(event, experience, notification)
+  parent :notification, event, experience, notification
+end
+
+crumb :new_guests_notification do  |event, experience, notification|
+  link "Add guests to #{experience.name} notification",
+       new_event_experience_notification_guests_notification_path(event,
+                                                                  experience,
+                                                                  notification)
   parent :notification, event, experience, notification
 end

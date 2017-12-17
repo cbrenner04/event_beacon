@@ -26,6 +26,31 @@ RSpec.describe 'Experiences', type: :feature do
     end
   end
 
+  describe 'new' do
+    before { visit new_event_guest_path(event) }
+
+    it 'allows for creating guest information' do
+      fill_in 'First name', with: 'Chewy'
+      fill_in 'Last name', with: 'Solo'
+      fill_in 'Email', with: 'chewy@example.com'
+      click_on 'Save'
+      expect(current_path).to eq "/events/#{event.id}/guests"
+      expect(page).to have_text 'Chewy Solo'
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      fill_in 'First name', with: ''
+      fill_in 'Last name', with: ''
+      click_on 'Save'
+      expect(page).to have_text '4 errors prohibited this guest from ' \
+                                'being saved:'
+      expect(page).to have_text "First name can't be blank"
+      expect(page).to have_text "Last name can't be blank"
+      expect(page).to have_text "Phone number can't be blank"
+      expect(page).to have_text "Email can't be blank"
+    end
+  end
+
   describe 'edit' do
     before { visit edit_event_guest_path(event, guest) }
 
