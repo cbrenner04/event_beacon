@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     end
     resources :guests, only: %i[index edit]
   end
+  resources :guests_notifications, only: :destroy
   root to: 'events#index'
 end

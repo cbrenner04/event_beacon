@@ -6,6 +6,6 @@ class NotificationsController < ApplicationController
     @experience = Experience.find(params[:experience_id])
     @event = @experience.event
     @notification = Notification.find(params[:id])
-    @guests = @notification.guests_notifications.map(&:guest)
+    @guests_notifications = @notification.guests_notifications
   end
 end

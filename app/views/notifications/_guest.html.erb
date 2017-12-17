@@ -1,0 +1,8 @@
+<tr>
+  <td><%= guest.full_name %></td>
+  <td><%= guest.email %></td>
+  <td><%= guest.phone_number %></td>
+  <td><%= guest.notification_category %></td>
+  <td><%= link_to "", edit_event_guest_path(event, guest), class: "fa fa-pencil" %></td>
+  <td><%= link_to "", guests_notification_path(guests_notification), method: :delete, data: { confirm: "Are you sure?" }, class: "fa fa-trash" %></td>
+</tr>

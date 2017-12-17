@@ -8,9 +8,11 @@ RSpec.describe NotificationsController do
   let(:guest) { create :guest, event: event }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
+  let!(:guests_notification) do
+    create :guests_notification, guest: guest, notification: notification
+  end
 
   before do
-    create :guests_notification, guest: guest, notification: notification
     sign_in user
   end
 
@@ -52,7 +54,7 @@ RSpec.describe NotificationsController do
         id: notification.id
       }
 
-      expect(assigns(:guests)).to include guest
+      expect(assigns(:guests_notifications)).to include guests_notification
     end
   end
 end

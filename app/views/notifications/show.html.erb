@@ -17,9 +17,12 @@
       <th>Phone Number</th>
       <th>Notification Type</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <%= render @guests %>
+    <% @guests_notifications.each do |guests_notification| %>
+      <%= render "notifications/guest", event: @event, guests_notification: guests_notification, guest: guests_notification.guest %>
+    <% end %>
   </tbody>
 </table>
