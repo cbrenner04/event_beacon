@@ -3,7 +3,7 @@
 <h1>Add guests to <%= @experience.name %> notification</h1>
 
 <%= form_for :guests_notifications, url: event_experience_notification_guests_notifications_path(@event, @experience, @notification), method: :post do |f| %>
-  <div class="row">
+  <div class="row mt-3 mb-3">
     <%= f.collection_check_boxes(:guest_ids, @event.guests.all, :id, :full_name) do |b| %>
       <div class="col-4">
         <%= b.check_box %>
@@ -14,5 +14,5 @@
     <% end %>
   </div>
   <%= f.submit "Save", class: "btn btn-primary" %>
-  <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification) %>
+  <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification), class: "btn btn-secondary" %>
 <% end %>

@@ -39,6 +39,16 @@ class GuestsController < ApplicationController
     end
   end
 
+  def destroy
+    set_event
+    @guest = Guest.find(params[:id])
+    @guest.delete
+    redirect_to(
+      event_guests_path(@event),
+      notice: "#{@guest.full_name} was deleted successfully"
+    )
+  end
+
   private
 
   def guest_params

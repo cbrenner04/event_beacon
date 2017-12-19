@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         resources :guests_notifications, only: %i[new create destroy]
       end
     end
-    resources :guests, only: %i[index new create edit update]
+    resources :guests, only: %i[index new create edit update destroy]
   end
   root to: 'events#index'
 end

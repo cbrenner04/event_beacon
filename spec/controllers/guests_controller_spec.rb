@@ -114,4 +114,22 @@ RSpec.describe GuestsController do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    it 'deletes the guest' do
+      delete :destroy, params: {
+        event_id: event.id,
+        id: guest.id
+      }
+      expect(Guest.all).to_not include guest
+    end
+
+    it 'renders the notification page' do
+      delete :destroy, params: {
+        event_id: event.id,
+        id: guest.id
+      }
+      expect(response).to redirect_to event_guests_path(event)
+    end
+  end
 end
