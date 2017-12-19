@@ -2,4 +2,6 @@
 
 <h1>Edit <%= @guest.full_name %></h1>
 
-<%= render "guests/form", url: event_guest_path(@event, @guest) %>
+<div class="mt-3">
+  <%= render "guests/form", url: event_guest_path(@event, @guest) %>
+</div>

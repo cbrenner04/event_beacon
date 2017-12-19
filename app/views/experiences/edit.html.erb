@@ -2,4 +2,6 @@
 
 <h1>Edit <%= @experience.name %></h1>
 
-<%= render "experiences/form", url: event_experience_path(@event, @experience) %>
+<div class="mt-3">
+  <%= render "experiences/form", url: event_experience_path(@event, @experience) %>
+</div>

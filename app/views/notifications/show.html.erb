@@ -2,17 +2,29 @@
 
 <h1>Notification for <%= @experience.name %></h1>
 
-<%= link_to "Edit", edit_event_experience_notification_path(@event, @experience, @notification) %>
+<div class="mb-3">
+  <%= link_to "Edit", edit_event_experience_notification_path(@event, @experience, @notification) %>
+</div>
 
 <h2>SMS Body</h2>
-<%= @notification.sms_body %>
+<div class="card mb-3">
+  <div class="card-body">
+    <%= @notification.sms_body %>
+  </div>
+</div>
 
 <h2>Email Body</h2>
-<%= @notification.email_body %>
+<div class="card mb-3">
+  <div class="card-body">
+    <%= simple_format(@notification.email_body) %>
+  </div>
+</div>
 
 <h2>Guests</h2>
 
-<%= link_to "Add guests", new_event_experience_notification_guests_notification_path(@event, @experience, @notification) %>
+<div class="mb-3">
+  <%= link_to "Add guests", new_event_experience_notification_guests_notification_path(@event, @experience, @notification) %>
+</div>
 
 <table class="table table-striped table-hover">
   <thead>

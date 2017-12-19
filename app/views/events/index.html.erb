@@ -1,5 +1,7 @@
 <h1>Events</h1>
 
-<% @events.each do |event| %>
-  <%= link_to event.name, event_path(event) %>
-<% end %>
+<div class="pt-2">
+  <% @events.each do |event| %>
+    <%= link_to event.name, event_path(event) %>
+  <% end %>
+</div>

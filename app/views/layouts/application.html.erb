@@ -15,7 +15,9 @@
       <%= render "layouts/nav" %>
 
       <div class="container">
-        <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
+        <div class="mb-2">
+          <%= breadcrumbs pretext: "", separator: " &rsaquo; " %>
+        </div>
         <%= render "layouts/alert" %>
         <%= yield %>
       </div>

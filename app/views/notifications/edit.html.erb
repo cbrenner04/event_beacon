@@ -2,19 +2,21 @@
 
 <h1>Edit <%= @experience.name %> Notification</h1>
 
-<%= form_for @notification, url: event_experience_notification_path(@event, @experience, @notification), class: "form-horizontal" do |f| %>
-  <%= render "shared/alert", invalid_object: @notification, name: "notification" %>
+<div class="mt-3">
+  <%= form_for @notification, url: event_experience_notification_path(@event, @experience, @notification), class: "form-horizontal" do |f| %>
+    <%= render "shared/alert", invalid_object: @notification, name: "notification" %>
 
-  <div class="form-group">
-    <%= f.label :sms_body, class: "col-sm-2 control-label" %>
-    <%= f.text_area :sms_body, class: "form-control" %>
-  </div>
+    <div class="form-group">
+      <%= f.label :sms_body, class: "col-sm-2 control-label" %>
+      <%= f.text_area :sms_body, class: "form-control" %>
+    </div>
 
-  <div class="form-group">
-    <%= f.label :email_body, class: "col-sm-2 control-label" %>
-    <%= f.text_area :email_body, class: "form-control" %>
-  </div>
+    <div class="form-group">
+      <%= f.label :email_body, class: "col-sm-2 control-label" %>
+      <%= f.text_area :email_body, class: "form-control", rows: "10" %>
+    </div>
 
-  <%= f.submit "Save", class: "btn btn-primary" %>
-  <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification) %>
-<% end %>
+    <%= f.submit "Save", class: "btn btn-primary" %>
+    <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification), class: "btn btn-secondary"  %>
+  <% end %>
+</div>
