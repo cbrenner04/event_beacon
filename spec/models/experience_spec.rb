@@ -18,4 +18,12 @@ RSpec.describe Experience, type: :model do
       expect(experience).to be_invalid
     end
   end
+
+  describe '#needs_notifying?' do
+    it 'returns true if occurs_at is within ten minutes' do
+      expect(experience.needs_notifying?).to eq false
+      experience.update!(occurs_at: Time.zone.now - 500)
+      expect(experience.needs_notifying?).to eq true
+    end
+  end
 end

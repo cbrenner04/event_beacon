@@ -7,4 +7,8 @@ class Experience < ApplicationRecord
   has_one :notification, dependent: :destroy
 
   validates :name, :occurs_at, presence: true
+
+  def needs_notifying?
+    occurs_at > Time.zone.now - 599 && occurs_at <= Time.zone.now
+  end
 end

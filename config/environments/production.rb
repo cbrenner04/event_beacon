@@ -97,4 +97,22 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Setup the mailer config
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+    port: ENV['MAILGUN_SMTP_PORT'],
+    address: ENV['MAILGUN_SMTP_SERVER'],
+    user_name: ENV['MAILGUN_SMTP_LOGIN'],
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
+    domain: 'brennoranotifier.herokuapp.com',
+    authentication: :plain,
+  }
+
+  # set default url for heroku
+  config.action_mailer.default_url_options = {
+    host: 'brennoranotifier.herokuapp.com',
+    protocol: 'https'
+  }
 end
