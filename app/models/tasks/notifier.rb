@@ -12,7 +12,7 @@ module Tasks
         notification.guests.each do |guest|
           nc = guest.notification_category
           next if nc.nil?
-          send_sms_for(guest, notification) if %w[phone both].include? nc
+          send_sms_for(guest, notification) if %w[text both].include? nc
           send_email_for(guest, notification) if %w[email both].include? nc
         end
       end

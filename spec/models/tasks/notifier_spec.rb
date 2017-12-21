@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Tasks::Notifier, type: :model do
   let(:event) { create :event }
-  let(:guest) { create :guest, event: event, notification_category: 'both' }
+  let(:guest) { create :guest, event: event, notification_category: 'text' }
   let(:experience) do
     create :experience, event: event, occurs_at: Time.zone.now
   end
