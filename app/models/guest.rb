@@ -20,7 +20,7 @@ class Guest < ApplicationRecord
   validates :email, presence: true,
                     if: proc { |guest| guest.phone_number.blank? }
 
-  default_scope { order(last_name: :asc) }
+  default_scope { order(last_name: :asc, first_name: :asc) }
 
   def full_name
     "#{first_name} #{last_name}"

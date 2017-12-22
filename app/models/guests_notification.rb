@@ -8,5 +8,7 @@ class GuestsNotification < ApplicationRecord
   validates :guest, :notification, presence: true
   validates :guest, uniqueness: { scope: :notification }
 
-  default_scope { includes(:guest).order('guests.last_name asc') }
+  default_scope do
+    includes(:guest).order('guests.last_name asc, guests.first_name asc')
+  end
 end
