@@ -8,4 +8,6 @@ class Event < ApplicationRecord
   has_many :users, through: :users_events, source: :user, dependent: :destroy
 
   validates :name, :occurs_at, presence: true
+
+  default_scope { order(occurs_at: :asc) }
 end
