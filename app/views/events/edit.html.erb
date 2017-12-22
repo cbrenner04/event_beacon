@@ -1,0 +1,7 @@
+<% breadcrumb :edit_event, @event %>
+
+<h1>Edit <%= @event.name %></h1>
+
+<div class="mt-3">
+  <%= render "events/form", url: event_path(@event) %>
+</div>

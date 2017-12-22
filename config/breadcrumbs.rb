@@ -6,6 +6,14 @@ crumb :event do |event|
   link event.name, event_path(event)
 end
 
+crumb :new_event do
+  link "Add event", new_event_path
+end
+
+crumb :edit_event do |event|
+  link "Edit #{event.name}", edit_event_path(event)
+end
+
 crumb :guests do |event|
   link "Guests", event_guests_path(event)
   parent :event, event

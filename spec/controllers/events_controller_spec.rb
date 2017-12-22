@@ -32,4 +32,87 @@ RSpec.describe EventsController do
       expect(assigns(:event)).to eq event
     end
   end
+
+  describe 'GET #new' do
+    it 'assigns the event as @event' do
+      get :new
+
+      expect(assigns(:event)).to be_a_new(Event)
+    end
+  end
+
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'creates event' do
+        expect do
+          post :create, params: {
+            event: {
+              name: 'foobaz',
+              occurs_at: Time.zone.now
+            }
+          }
+        end.to change(Event, :count).by 1
+      end
+
+      it 'creates related users event' do
+        expect do
+          post :create, params: {
+            event: {
+              name: 'asdf',
+              occurs_at: Time.zone.now
+            }
+          }
+        end.to change(UsersEvent, :count).by 1
+      end
+    end
+
+    context 'with invalid params' do
+      it 're-renders new' do
+        post :create, params: {
+          event_id: event.id,
+          event: {
+            name: nil
+          }
+        }
+        expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'GET #edit' do
+    it 'assigns the requested event as @event' do
+      get :edit, params: {
+        id: event.id
+      }
+
+      expect(assigns(:event)).to eq event
+    end
+  end
+
+  describe 'PATCH #update' do
+    context 'with valid params' do
+      it 'updates event' do
+        patch :update, params: {
+          id: event.id,
+          event: {
+            name: 'foobaz'
+          }
+        }
+        event.reload
+        expect(event.name).to eq 'foobaz'
+      end
+    end
+
+    context 'with invalid params' do
+      it 're-renders edit' do
+        patch :update, params: {
+          id: event.id,
+          event: {
+            name: nil
+          }
+        }
+        expect(response).to render_template :edit
+      end
+    end
+  end
 end

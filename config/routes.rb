@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :events, only: %i[index show] do
+  resources :events, only: %i[index show new create edit update] do
     resources :experiences, only: %i[index new create edit update] do
       resources :notifications, only: %i[show edit update] do
         resources :guests_notifications, only: %i[new create destroy]

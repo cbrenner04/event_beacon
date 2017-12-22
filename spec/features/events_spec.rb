@@ -42,4 +42,46 @@ RSpec.describe 'Events', type: :feature do
       expect(current_path).to eq "/events/#{event.id}/experiences"
     end
   end
+
+  describe 'new' do
+    before { visit new_event_path }
+
+    it 'allows for adding event information' do
+      fill_in 'Name', with: 'Foobar in the morning'
+      click_on 'Save'
+      expect(current_path).to eq '/events'
+      expect(page).to have_text 'Foobar in the morning'
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      fill_in 'Name', with: ''
+      click_on 'Save'
+      expect(page).to have_text '1 error prohibited this event from ' \
+                                'being saved:'
+      expect(page).to have_text "Name can't be blank"
+    end
+  end
+
+  describe 'edit' do
+    before { visit edit_event_path(event) }
+
+    it 'displays event' do
+      expect(page).to have_text event.name
+    end
+
+    it 'allows for updating event information' do
+      fill_in 'Name', with: 'Foobar in the morning'
+      click_on 'Save'
+      expect(current_path).to eq '/events'
+      expect(page).to have_text 'Foobar in the morning'
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      fill_in 'Name', with: ''
+      click_on 'Save'
+      expect(page).to have_text '1 error prohibited this event from ' \
+                                'being saved:'
+      expect(page).to have_text "Name can't be blank"
+    end
+  end
 end

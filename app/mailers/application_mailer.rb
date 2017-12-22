@@ -2,6 +2,6 @@
 
 # no doc
 class ApplicationMailer < ActionMailer::Base
-  default from: 'no-reply@brennoranotifier.herokuapp.com'
+  default from: 'no-reply@notifier.site'
   layout 'mailer'
 end

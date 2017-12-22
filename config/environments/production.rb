@@ -106,13 +106,13 @@ Rails.application.configure do
     address: ENV['MAILGUN_SMTP_SERVER'],
     user_name: ENV['MAILGUN_SMTP_LOGIN'],
     password: ENV['MAILGUN_SMTP_PASSWORD'],
-    domain: 'brennoranotifier.herokuapp.com',
+    domain: 'notifier.site',
     authentication: :plain,
   }
 
   # set default url for heroku
   config.action_mailer.default_url_options = {
-    host: 'brennoranotifier.herokuapp.com',
+    host: 'notifier.site',
     protocol: 'https'
   }
 end
