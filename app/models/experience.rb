@@ -6,11 +6,22 @@ class Experience < ApplicationRecord
 
   has_one :notification, dependent: :destroy
 
-  validates :name, :occurs_at, presence: true
+  validates :name, :occurs_at, :notification_offset, presence: true
 
   default_scope { order(occurs_at: :asc) }
 
   def needs_notifying?
-    occurs_at > Time.zone.now - 599 && occurs_at <= Time.zone.now
+    time_to_send_notification > Time.zone.now - 599 &&
+      time_to_send_notification <= Time.zone.now
+  end
+
+  def time_to_send_notification
+    occurs_at - offset_in_seconds
+  end
+
+  private
+
+  def offset_in_seconds
+    notification_offset * 60
   end
 end

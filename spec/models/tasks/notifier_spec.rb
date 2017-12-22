@@ -6,7 +6,9 @@ RSpec.describe Tasks::Notifier, type: :model do
   let(:event) { create :event }
   let(:guest) { create :guest, event: event, notification_category: 'both' }
   let(:experience) do
-    create :experience, event: event, occurs_at: Time.zone.now
+    create :experience, event: event,
+                        occurs_at: Time.zone.now,
+                        notification_offset: 0
   end
   let(:notification) { create :notification, experience: experience }
   let(:second_experience) do

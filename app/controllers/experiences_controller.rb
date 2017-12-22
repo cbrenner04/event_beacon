@@ -41,7 +41,7 @@ class ExperiencesController < ApplicationController
   private
 
   def experience_params
-    params.require(:experience).permit(:name, :occurs_at)
+    params.require(:experience).permit(:name, :occurs_at, :notification_offset)
   end
 
   def set_event

@@ -2,13 +2,19 @@
   <%= render "shared/alert", invalid_object: @experience, name: "experience" %>
 
   <div class="form-group">
-    <%= f.label :name, class: "col-sm-2 control-label" %>
+    <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :occurs_at, class: "col-sm-2 control-label" %>
-    <%= f.datetime_select :occurs_at %>
+    <%= f.label :occurs_at %>
+    <%= f.datetime_select :occurs_at, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :notification_offset, "How long before the experience should the notification be sent?" %>
+    <%= f.number_field :notification_offset, class: "form-control" %>
+    <small id="notification-offset-help" class="form-text text-muted">In minutes</small>
   </div>
 
   <%= f.submit "Save", class: "btn btn-primary" %>

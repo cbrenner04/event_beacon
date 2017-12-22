@@ -11,6 +11,7 @@
     <tr>
       <th>Name</th>
       <th>Date/Time</th>
+      <th>Notification Time</th>
       <th></th>
       <th></th>
     </tr>
@@ -20,6 +21,7 @@
       <tr>
         <td><%= experience.name %></td>
         <td><%= experience.occurs_at.strftime('%m/%d/%Y %I:%M %P') %></td>
+        <td><%= experience.time_to_send_notification.strftime('%m/%d/%Y %I:%M %P') %></td>
         <td><%= link_to "Notification", event_experience_notification_path(@event, experience, experience.notification) %></td>
         <td><%= link_to "", edit_event_experience_path(@event, experience), class: "fa fa-pencil" %></td>
       </tr>

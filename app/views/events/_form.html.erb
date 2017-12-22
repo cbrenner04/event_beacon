@@ -2,12 +2,12 @@
   <%= render "shared/alert", invalid_object: @event, name: "event" %>
 
   <div class="form-group">
-    <%= f.label :name, class: "col-sm-2 control-label" %>
+    <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :occurs_at, class: "col-sm-2 control-label" %>
+    <%= f.label :occurs_at %>
     <%= f.datetime_select :occurs_at %>
   </div>
 

@@ -7,12 +7,12 @@
     <%= render "shared/alert", invalid_object: @notification, name: "notification" %>
 
     <div class="form-group">
-      <%= f.label :sms_body, class: "col-sm-2 control-label" %>
+      <%= f.label :sms_body %>
       <%= f.text_area :sms_body, class: "form-control" %>
     </div>
 
     <div class="form-group">
-      <%= f.label :email_body, class: "col-sm-2 control-label" %>
+      <%= f.label :email_body %>
       <%= f.text_area :email_body, class: "form-control", rows: "10" %>
     </div>
 
