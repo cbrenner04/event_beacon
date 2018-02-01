@@ -59,11 +59,11 @@ RSpec.describe 'Experiences', type: :feature do
                                                     notification)
     end
 
-    it 'displays guest' do
+    it 'displays notification' do
       expect(page).to have_text notification.sms_body
     end
 
-    it 'allows for updating guest information' do
+    it 'allows for updating notification information' do
       fill_in 'Sms body', with: 'SMS FOOBAR BODY'
       fill_in 'Email body', with: 'EMAIL FOOBAZ BODY'
       click_on 'Save'
@@ -72,6 +72,18 @@ RSpec.describe 'Experiences', type: :feature do
                                  "#{notification.id}"
       expect(page).to have_text 'SMS FOOBAR BODY'
       expect(page).to have_text 'EMAIL FOOBAZ BODY'
+    end
+
+    it 'gives sms body character count' do
+      character_count = notification.sms_body.length
+      expect(page).to have_text "#{character_count} characters"
+    end
+
+    it 'updates sms body character count', :js do
+      starting_character_count = notification.sms_body.length
+      expect(page).to have_text "#{starting_character_count} characters"
+      fill_in 'Sms body', with: notification.sms_body + 'f'
+      expect(page).to have_text "#{starting_character_count + 1} characters"
     end
 
     it 're-renders and gives correct error message if information is bad' do
