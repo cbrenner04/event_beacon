@@ -64,7 +64,7 @@ RSpec.describe 'Experiences', type: :feature do
     end
 
     it 'allows for updating notification information' do
-      fill_in 'Sms body', with: 'SMS FOOBAR BODY'
+      fill_in 'SMS body', with: 'SMS FOOBAR BODY'
       fill_in 'Email body', with: 'EMAIL FOOBAZ BODY'
       click_on 'Save'
       expect(current_path).to eq "/events/#{event.id}/experiences/" \
@@ -82,12 +82,24 @@ RSpec.describe 'Experiences', type: :feature do
     it 'updates sms body character count', :js do
       starting_character_count = notification.sms_body.length
       expect(page).to have_text "#{starting_character_count} characters"
-      fill_in 'Sms body', with: notification.sms_body + 'f'
+      fill_in 'SMS body', with: notification.sms_body + 'f'
       expect(page).to have_text "#{starting_character_count + 1} characters"
     end
 
+    it 'allows for appending a bitly link to the sms body', :js do
+      starting_character_count = notification.sms_body.length
+      fill_in 'SMS Link', with: 'https://www.google.com'
+      click_on 'Append link to SMS body'
+      mock_bitly_link = ' short.url'
+      sms_body_input_text = page.find('#notification_sms_body').value
+      expect(sms_body_input_text)
+        .to eq "#{notification.sms_body}#{mock_bitly_link}"
+      new_character_count = starting_character_count + mock_bitly_link.length
+      expect(page).to have_text "#{new_character_count} characters"
+    end
+
     it 're-renders and gives correct error message if information is bad' do
-      fill_in 'Sms body', with: ''
+      fill_in 'SMS body', with: ''
       click_on 'Save'
       expect(page).to have_text '1 error prohibited this notification from ' \
                                 'being saved:'

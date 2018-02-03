@@ -8,14 +8,18 @@
 
     <div class="form-group">
       <%= f.label :sms_body %>
+      <i type="button" class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="We recommend SMS messages stay under 160 characters to ensure all guests receive the full message."></i>
       <%= f.text_area :sms_body, class: "form-control", onkeyup: "countChar(this)" %>
       <small id="sms-character-count-help" class="form-text text-muted">
         <%= @notification.sms_body.length %> characters
       </small>
-      <small class="form-text text-muted">
-        We recommend sms messages stay under 160 characters to ensure all guests
-        receive the full message.
-      </small>
+    </div>
+
+    <div class="form-group">
+      <label for="notification_sms_link">SMS Link</label>
+      <i type="button" class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="If you'd like to have a link in your SMS, enter it here. We will shorten it for you and append it to the SMS body."></i>
+      <input id="notification_sms_link" name="sms-link" type="text" class="form-control">
+      <button type="button" class="btn btn-outline-secondary" onclick="appendSmsLink()">Append link to SMS body</button>
     </div>
 
     <div class="form-group">
@@ -27,11 +31,3 @@
     <%= link_to "Cancel", event_experience_notification_path(@event, @experience, @notification), class: "btn btn-secondary"  %>
   <% end %>
 </div>
-
-<script>
-  function countChar(input_field) {
-    var sms_body_length = input_field.value.length;
-    var help_element = document.getElementById('sms-character-count-help');
-    help_element.innerHTML = sms_body_length + ' characters';
-  };
-</script>

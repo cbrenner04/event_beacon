@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'mock_sms_notifier'
+require 'mock_bitly'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -13,6 +14,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     stub_const('SmsNotifier', MockSmsNotifier)
+    stub_const('Bitly', MockBitly)
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups

@@ -8,5 +8,6 @@ Rails.application.routes.draw do
     end
     resources :guests, only: %i[index new create edit update destroy]
   end
+  resource :short_url, only: :show
   root to: 'events#index'
 end

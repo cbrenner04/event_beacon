@@ -7,6 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'bitly', '~> 1.1', '>= 1.1.1'
 gem 'bootstrap', '~> 4.0.0.beta2.1'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise', '~> 4.3'
@@ -27,6 +28,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara', '~> 2.16', '>= 2.16.1'
   gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
+  gem 'dotenv-rails', '~> 2.2', '>= 2.2.1'
   gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
   gem 'launchy', '~> 2.4', '>= 2.4.3'
   gem 'poltergeist', '~> 1.17'
