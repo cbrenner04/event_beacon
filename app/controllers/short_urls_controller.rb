@@ -4,6 +4,6 @@
 class ShortUrlsController < ApplicationController
   def show
     short_link = Bitly.client.shorten(params[:link]).short_url
-    render plain: short_link
+    render plain: helpers.sanitize(short_link)
   end
 end

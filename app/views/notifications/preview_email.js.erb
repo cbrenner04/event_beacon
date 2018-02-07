@@ -1,0 +1,3 @@
+$("#email-body-preview").html(
+  "<%= escape_javascript(render partial: 'notifications/preview', locals: { email_body: params[:email_body] }) %>"
+);

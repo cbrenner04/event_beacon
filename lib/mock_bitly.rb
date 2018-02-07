@@ -8,11 +8,14 @@ module MockBitly
 
   # mock client class
   class Client
-    Url = Struct.new(:short_url)
+    Url = Struct.new(:short_url, :long_url)
 
     def shorten(link)
-      raise 'A link is required' unless link
-      Url.new('short.url')
+      Url.new('short.url', link)
+    end
+
+    def expand(link)
+      Url.new(link, 'http://long.url')
     end
   end
 end

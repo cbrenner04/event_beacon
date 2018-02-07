@@ -8,6 +8,7 @@ class NotificationsController < ApplicationController
 
   def edit
     set_instance_variables
+    @sms_link = helpers.sanitize(@notification.sms_link)
   end
 
   def update
@@ -21,6 +22,8 @@ class NotificationsController < ApplicationController
       render :edit
     end
   end
+
+  def preview_email; end
 
   private
 

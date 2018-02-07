@@ -10,4 +10,10 @@ class Notification < ApplicationRecord
                     dependent: :destroy
 
   validates :sms_body, :email_body, presence: true
+
+  def sms_link
+    return nil unless sms_body.include? 'http://bit.ly'
+    short_link = %r{http:\/\/bit.ly\/.+$}.match(sms_body)[0]
+    Bitly.client.expand(short_link).long_url
+  end
 end

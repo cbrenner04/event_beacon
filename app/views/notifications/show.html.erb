@@ -16,7 +16,7 @@
 <h2>Email Body</h2>
 <div class="card mb-3">
   <div class="card-body">
-    <%= simple_format(@notification.email_body) %>
+    <%= render "notifications/preview", email_body: @notification.email_body %>
   </div>
 </div>
 

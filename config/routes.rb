@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :events, only: %i[index show new create edit update] do
     resources :experiences, only: %i[index new create edit update] do
       resources :notifications, only: %i[show edit update] do
+        get :preview_email, on: :member
         resources :guests_notifications, only: %i[new create destroy]
       end
     end
