@@ -6,17 +6,6 @@
   <%= link_to "Add", new_event_guest_path(@event) %>
 </div>
 
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th>Notification Type</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render @guests %>
-  </tbody>
-</table>
+<div id="accordion">
+  <%= render @guests %>
+</div>

@@ -25,4 +25,16 @@ class Guest < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def pretty_notification_category
+    if notification_category == 'both'
+      'text, email'
+    else
+      notification_category
+    end
+  end
+
+  def pretty_phone_number
+    "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..9]}"
+  end
 end

@@ -20,14 +20,16 @@ RSpec.describe 'Experiences', type: :feature do
     end
 
     it 'links to guest edit page' do
-      find('tr', text: guest.first_name).find('.fa-pencil').click
+      click_on guest.first_name
+      find('.fa-pencil').click
       expect(current_path)
         .to eq "/events/#{event.id}/guests/#{guest.id}/edit"
     end
 
     it 'allows for deletion of guest', :js do
       accept_alert do
-        find('tr', text: guest.first_name).find('.fa-trash').click
+        click_on guest.first_name
+        find('.fa-trash').click
       end
       page.refresh
       expect(page).to have_no_text guest.first_name

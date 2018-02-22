@@ -26,20 +26,8 @@
   <%= link_to "Add guests", new_event_experience_notification_guests_notification_path(@event, @experience, @notification) %>
 </div>
 
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th>Notification Type</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @guests_notifications.each do |guests_notification| %>
-      <%= render "notifications/guest", event: @event, guests_notification: guests_notification, guest: guests_notification.guest %>
-    <% end %>
-  </tbody>
-</table>
+<div id="accordion">
+  <% @guests_notifications.each do |guests_notification| %>
+    <%= render "notifications/guest", event: @event, guests_notification: guests_notification, guest: guests_notification.guest %>
+  <% end %>
+</div>

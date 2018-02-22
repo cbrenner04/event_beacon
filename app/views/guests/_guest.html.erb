@@ -1,8 +1,30 @@
-<tr>
-  <td><%= guest.full_name %></td>
-  <td><%= guest.email %></td>
-  <td><%= guest.phone_number %></td>
-  <td><%= guest.notification_category %></td>
-  <td><%= link_to "", edit_event_guest_path(@event, guest), class: "fa fa-pencil" %></td>
-  <td><%= link_to "", event_guest_path(@event, guest), method: :delete, data: { confirm: "Are you sure?" }, class: "fa fa-trash" %></td>
-</tr>
+<div class="card">
+  <div class="card-header" id="heading-<%= guest.id %>">
+    <h5 class="mb-0">
+      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-<%= guest.id %>" aria-expanded="false" aria-controls="collapse-<%= guest.id %>">
+        <%= guest.full_name %>
+      </button>
+    </h5>
+  </div>
+  <div id="collapse-<%= guest.id %>" class="collapse" aria-labelledby="heading-<%= guest.id %>" data-parent="#accordion">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6 col-lg-5 text-truncate">
+          <%= guest.email %>
+        </div>
+        <div class="col-6 col-lg-2">
+          <%= guest.pretty_phone_number %>
+        </div>
+        <div class="col-6 col-lg-3">
+          <%= guest.pretty_notification_category %>
+        </div>
+        <div class="col-1">
+          <%= link_to "", edit_event_guest_path(@event, guest), class: "fa fa-pencil" %>
+        </div>
+        <div class="col-1">
+          <%= link_to "", event_guest_path(@event, guest), method: :delete, data: { confirm: "Are you sure?" }, class: "fa fa-trash" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
