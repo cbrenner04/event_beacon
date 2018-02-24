@@ -1,5 +1,5 @@
 {
-  "name": "brennoraNotifier",
+  "name": "event-beacon",
   "private": true,
   "dependencies": {}
 }

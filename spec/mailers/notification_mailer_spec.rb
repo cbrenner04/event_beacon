@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe NotificationMailer, type: :mailer do
-  let(:host) { 'notifier.site' }
+  let(:host) { 'event-beacon.com' }
   let(:guest_email) { 'sharee.email@example.com' }
   let(:subject) { 'Something is happening soon' }
   let(:message) { 'Please come to the thing. It will be fun.' }
@@ -19,7 +19,7 @@ RSpec.describe NotificationMailer, type: :mailer do
 
     it { expect(mail.subject).to eq subject }
     it { expect(mail.to).to eq [guest_email] }
-    it { expect(mail.from).to eq ['no-reply@notifier.site'] }
+    it { expect(mail.from).to eq ['no-reply@event-beacon.com'] }
     it { expect(mail.body.encoded).to include message }
   end
 end
