@@ -35,6 +35,7 @@ group :development, :test do
   gem 'poltergeist', '~> 1.17'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'
   gem 'rspec-rails', '~> 3.7', '>= 3.7.2'
+  gem 'site_prism', '~> 2.9', '>= 2.9.1'
 end
 
 group :development do

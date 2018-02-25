@@ -6,6 +6,9 @@ RSpec.describe 'Experiences', type: :feature do
   let(:user) { create :user }
   let(:event) { create :event }
   let!(:guest) { create :guest, event: event }
+  let(:guests_page) { Pages::Guests::Index.new }
+  let(:new_guest_page) { Pages::Guests::New.new }
+  let(:edit_guest_page) { Pages::Guests::Edit.new }
 
   before do
     create :users_event, user: user, event: event
@@ -16,23 +19,25 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit event_guests_path(event) }
 
     it 'lists guests related to the event' do
-      expect(page).to have_text guest.first_name
+      expect(guests_page).to have_text guest.first_name
     end
 
     it 'links to guest edit page' do
-      click_on guest.first_name
-      find('.fa-pencil').click
-      expect(current_path)
-        .to eq "/events/#{event.id}/guests/#{guest.id}/edit"
+      guests_page.select_guest guest.first_name
+      guests_page.edit.click
+
+      expect(current_path).to eq edit_event_guest_path(event.id, guest.id)
     end
 
     it 'allows for deletion of guest', :js do
       accept_alert do
-        click_on guest.first_name
-        find('.fa-trash').click
+        guests_page.select_guest guest.first_name
+        guests_page.delete.click
       end
-      page.refresh
-      expect(page).to have_no_text guest.first_name
+
+      guests_page.refresh
+
+      expect(guests_page).to have_no_text guest.first_name
     end
   end
 
@@ -40,24 +45,26 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit new_event_guest_path(event) }
 
     it 'allows for creating guest information' do
-      fill_in 'First name', with: 'Chewy'
-      fill_in 'Last name', with: 'Solo'
-      fill_in 'Email', with: 'chewy@example.com'
-      click_on 'Save'
-      expect(current_path).to eq "/events/#{event.id}/guests"
-      expect(page).to have_text 'Chewy Solo'
+      new_guest_page.set_guest_first_name_to 'Chewy'
+      new_guest_page.set_guest_last_name_to 'Solo'
+      new_guest_page.set_guest_email_to 'chewy@example.com'
+      new_guest_page.save
+
+      expect(current_path).to eq event_guests_path(event.id)
+      expect(new_guest_page).to have_text 'Chewy Solo'
     end
 
     it 're-renders and gives correct error message if information is bad' do
-      fill_in 'First name', with: ''
-      fill_in 'Last name', with: ''
-      click_on 'Save'
-      expect(page).to have_text '4 errors prohibited this guest from ' \
-                                'being saved:'
-      expect(page).to have_text "First name can't be blank"
-      expect(page).to have_text "Last name can't be blank"
-      expect(page).to have_text "Phone number can't be blank"
-      expect(page).to have_text "Email can't be blank"
+      new_guest_page.set_guest_first_name_to ''
+      new_guest_page.set_guest_last_name_to ''
+      new_guest_page.save
+
+      expect(new_guest_page).to have_text '4 errors prohibited this guest ' \
+                                          'from being saved:'
+      expect(new_guest_page).to have_text "First name can't be blank"
+      expect(new_guest_page).to have_text "Last name can't be blank"
+      expect(new_guest_page).to have_text "Phone number can't be blank"
+      expect(new_guest_page).to have_text "Email can't be blank"
     end
   end
 
@@ -65,25 +72,27 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit edit_event_guest_path(event, guest) }
 
     it 'displays guest' do
-      expect(page).to have_text guest.first_name
+      expect(edit_guest_page).to have_text guest.first_name
     end
 
     it 'allows for updating guest information' do
-      fill_in 'First name', with: 'Chewy'
-      fill_in 'Last name', with: 'Solo'
-      click_on 'Save'
-      expect(current_path).to eq "/events/#{event.id}/guests"
-      expect(page).to have_text 'Chewy Solo'
+      edit_guest_page.set_guest_first_name_to 'Chewy'
+      edit_guest_page.set_guest_last_name_to 'Solo'
+      edit_guest_page.save
+
+      expect(current_path).to eq event_guests_path(event.id)
+      expect(edit_guest_page).to have_text 'Chewy Solo'
     end
 
     it 're-renders and gives correct error message if information is bad' do
-      fill_in 'First name', with: ''
-      fill_in 'Last name', with: ''
-      click_on 'Save'
-      expect(page).to have_text '2 errors prohibited this guest from ' \
-                                'being saved:'
-      expect(page).to have_text "First name can't be blank"
-      expect(page).to have_text "Last name can't be blank"
+      edit_guest_page.set_guest_first_name_to ''
+      edit_guest_page.set_guest_last_name_to ''
+      edit_guest_page.save
+
+      expect(edit_guest_page).to have_text '2 errors prohibited this guest ' \
+                                           'from being saved:'
+      expect(edit_guest_page).to have_text "First name can't be blank"
+      expect(edit_guest_page).to have_text "Last name can't be blank"
     end
   end
 end

@@ -7,6 +7,9 @@ RSpec.describe 'Experiences', type: :feature do
   let(:event) { create :event }
   let(:experience) { create :experience, event: event, name: 'asdf' }
   let!(:notification) { create :notification, experience: experience }
+  let(:experiences_page) { Pages::Experiences::Index.new }
+  let(:new_experience_page) { Pages::Experiences::New.new }
+  let(:edit_experience_page) { Pages::Experiences::Edit.new }
 
   before do
     create :users_event, user: user, event: event
@@ -17,22 +20,24 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit event_experiences_path(event) }
 
     it 'lists experiences related to the event' do
-      expect(page).to have_text experience.name
+      expect(experiences_page).to have_text experience.name
     end
 
     it 'links to experience edit page' do
-      click_on experience.name
-      find('.fa-pencil').click
+      experiences_page.select_experience experience.name
+      experiences_page.edit.click
+
       expect(current_path)
-        .to eq "/events/#{event.id}/experiences/#{experience.id}/edit"
+        .to eq edit_event_experience_path(event.id, experience.id)
     end
 
     it 'links to related notification page' do
-      click_on experience.name
-      click_on 'Notification'
-      expect(current_path).to eq "/events/#{event.id}/experiences/" \
-                                 "#{experience.id}/notifications/" \
-                                 "#{notification.id}"
+      experiences_page.select_experience experience.name
+      experiences_page.navigate_to_notification
+
+      expect(current_path)
+        .to eq event_experience_notification_path(event.id, experience.id,
+                                                  notification.id)
     end
   end
 
@@ -40,18 +45,20 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit new_event_experience_path(event) }
 
     it 'allows for adding experience information' do
-      fill_in 'Name', with: 'Foobar in the morning'
-      click_on 'Save'
-      expect(current_path).to eq "/events/#{event.id}/experiences"
-      expect(page).to have_text 'Foobar in the morning'
+      new_experience_page.set_experience_name_to 'Foobar in the morning'
+      new_experience_page.save
+
+      expect(current_path).to eq event_experiences_path(event.id)
+      expect(new_experience_page).to have_text 'Foobar in the morning'
     end
 
     it 're-renders and gives correct error message if information is bad' do
-      fill_in 'Name', with: ''
-      click_on 'Save'
-      expect(page).to have_text '1 error prohibited this experience from ' \
-                                'being saved:'
-      expect(page).to have_text "Name can't be blank"
+      new_experience_page.set_experience_name_to ''
+      new_experience_page.save
+
+      expect(new_experience_page).to have_text '1 error prohibited this ' \
+                                               'experience from being saved:'
+      expect(new_experience_page).to have_text "Name can't be blank"
     end
   end
 
@@ -59,22 +66,24 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit edit_event_experience_path(event, experience) }
 
     it 'displays experience' do
-      expect(page).to have_text experience.name
+      expect(edit_experience_page).to have_text experience.name
     end
 
     it 'allows for updating experience information' do
-      fill_in 'Name', with: 'Foobar in the morning'
-      click_on 'Save'
-      expect(current_path).to eq "/events/#{event.id}/experiences"
-      expect(page).to have_text 'Foobar in the morning'
+      edit_experience_page.set_experience_name_to 'Foobar in the morning'
+      edit_experience_page.save
+
+      expect(current_path).to eq event_experiences_path(event.id)
+      expect(edit_experience_page).to have_text 'Foobar in the morning'
     end
 
     it 're-renders and gives correct error message if information is bad' do
-      fill_in 'Name', with: ''
-      click_on 'Save'
-      expect(page).to have_text '1 error prohibited this experience from ' \
-                                'being saved:'
-      expect(page).to have_text "Name can't be blank"
+      edit_experience_page.set_experience_name_to ''
+      edit_experience_page.save
+
+      expect(edit_experience_page).to have_text '1 error prohibited this ' \
+                                                'experience from being saved:'
+      expect(edit_experience_page).to have_text "Name can't be blank"
     end
   end
 end
