@@ -10,6 +10,7 @@ RSpec.describe 'Guests Notifications', type: :feature do
   let!(:third_guest) { create :guest, event: event, first_name: 'Hoe' }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
+  let(:new_guests_notification_page) { Pages::GuestsNotifications::New.new }
 
   before { log_in_user user }
 
@@ -21,15 +22,16 @@ RSpec.describe 'Guests Notifications', type: :feature do
     end
 
     it 'allows for guests notifications to be created' do
-      check guest.full_name
-      check other_guest.full_name
-      click_on 'Save'
-      expect(current_path).to eq "/events/#{event.id}/experiences/" \
-                                 "#{experience.id}/notifications/" \
-                                 "#{notification.id}"
-      expect(page).to have_text guest.full_name
-      expect(page).to have_text other_guest.full_name
-      expect(page).to have_no_text third_guest.full_name
+      new_guests_notification_page.select_guest guest.full_name
+      new_guests_notification_page.select_guest other_guest.full_name
+      new_guests_notification_page.save
+
+      expect(current_path)
+        .to eq event_experience_notification_path(event.id, experience.id,
+                                                  notification.id)
+      expect(new_guests_notification_page).to have_text guest.full_name
+      expect(new_guests_notification_page).to have_text other_guest.full_name
+      expect(new_guests_notification_page).to have_no_text third_guest.full_name
     end
   end
 end

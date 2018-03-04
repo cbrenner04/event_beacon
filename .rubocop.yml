@@ -5,10 +5,15 @@ AllCops:
     - db/**/*
     - vendor/**/*
   TargetRubyVersion: 2.4
+  DisplayCopNames: true
 
 Rails:
   Enabled: true
 
 BlockLength:
+  Exclude:
+    - spec/**/*
+
+Naming/AccessorMethodName:
   Exclude:
     - spec/**/*
