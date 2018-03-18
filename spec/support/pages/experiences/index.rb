@@ -9,10 +9,6 @@ module Pages
       def select_experience(experience_name)
         click_on experience_name
       end
-
-      def navigate_to_notification
-        click_on 'Notification'
-      end
     end
   end
 end

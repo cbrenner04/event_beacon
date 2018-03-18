@@ -6,8 +6,18 @@
   <%= link_to "Add", new_event_experience_path(@event) %>
 </div>
 
-<div id="accordion">
-  <% @event.experiences.each do |experience| %>
-    <%= render "experiences/experience", experience: experience %>
-  <% end %>
-</div>
+<table class="table table-striped table-hover">
+  <thead></thead>
+  <tbody>
+    <% @event.experiences.each do |experience| %>
+      <tr>
+        <td>
+          <%= link_to experience.name, event_experience_notification_path(@event, experience, experience.notification) %>
+        </td>
+        <td>
+          <%= experience.pretty_occurs_at %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

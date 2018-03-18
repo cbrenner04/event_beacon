@@ -2,23 +2,41 @@
 
 <h1>Notification for <%= @experience.name %></h1>
 
-<div class="mb-3">
-  <%= link_to "Edit", edit_event_experience_notification_path(@event, @experience, @notification) %>
+<div class="text-muted">
+  <div>
+    <%= @experience.pretty_occurs_at %> |
+    <%= link_to "Edit notification timing", edit_event_experience_path(@event, @experience) %>
+  </div>
+  <div>
+    Sent <%= @experience.notification_offset %> minutes before
+  </div>
 </div>
 
-<h2>SMS Body</h2>
+<hr>
+
+<h2>Notification</h2>
+
+<div class="mb-3">
+  <%= link_to "Edit notification body", edit_event_experience_notification_path(@event, @experience, @notification) %>
+</div>
+
+<h3>SMS Body</h3>
+
 <div class="card mb-3">
   <div class="card-body">
     <%= @notification.sms_body %>
   </div>
 </div>
 
-<h2>Email Body</h2>
+<h3>Email Body</h3>
+
 <div class="card mb-3">
   <div class="card-body">
     <%= render "notifications/preview", email_body: @notification.email_body %>
   </div>
 </div>
+
+<hr>
 
 <h2>Guests</h2>
 
@@ -28,6 +46,6 @@
 
 <div id="accordion">
   <% @guests_notifications.each do |guests_notification| %>
-    <%= render "notifications/guest", event: @event, guests_notification: guests_notification, guest: guests_notification.guest %>
+    <%= render "guests/guest", event: @event, guest: guests_notification.guest, destroy_url: event_experience_notification_guests_notification_path(@event, @experience, @notification, guests_notification) %>
   <% end %>
 </div>

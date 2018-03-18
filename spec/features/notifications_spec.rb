@@ -33,8 +33,15 @@ RSpec.describe 'Experiences', type: :feature do
       expect(notification_page).to have_text guest.full_name
     end
 
-    it 'links to edit page' do
-      notification_page.navigate_to_edit
+    it 'links to edit experience page' do
+      notification_page.navigate_to_edit_experience_timing
+
+      expect(current_path)
+        .to eq edit_event_experience_path(event.id, experience.id)
+    end
+
+    it 'links to edit notification body page' do
+      notification_page.navigate_to_edit_notification_body
 
       expect(current_path)
         .to eq edit_event_experience_notification_path(event.id, experience.id,
@@ -49,10 +56,9 @@ RSpec.describe 'Experiences', type: :feature do
     end
 
     it 'allows for deletion of guests_notification', :js do
-      accept_alert do
-        notification_page.select_guest guest.first_name
-        notification_page.delete.click
-      end
+      notification_page.select_guest guest.first_name
+      notification_page.wait_for_accordion_to_open
+      accept_alert { notification_page.delete.click }
 
       notification_page.refresh
 

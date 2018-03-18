@@ -23,17 +23,8 @@ RSpec.describe 'Experiences', type: :feature do
       expect(experiences_page).to have_text experience.name
     end
 
-    it 'links to experience edit page' do
-      experiences_page.select_experience experience.name
-      experiences_page.edit.click
-
-      expect(current_path)
-        .to eq edit_event_experience_path(event.id, experience.id)
-    end
-
     it 'links to related notification page' do
       experiences_page.select_experience experience.name
-      experiences_page.navigate_to_notification
 
       expect(current_path)
         .to eq event_experience_notification_path(event.id, experience.id,

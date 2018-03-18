@@ -31,6 +31,7 @@ group :development, :test do
   gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
   gem 'dotenv-rails', '~> 2.2', '>= 2.2.1'
   gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
+  gem 'faker', '~> 1.8', '>= 1.8.7'
   gem 'launchy', '~> 2.4', '>= 2.4.3'
   gem 'poltergeist', '~> 1.17'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'

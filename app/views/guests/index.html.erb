@@ -7,5 +7,7 @@
 </div>
 
 <div id="accordion">
-  <%= render @guests %>
+  <% @guests.each do |guest| %>
+    <%= render "guests/guest", event: @event, guest: guest, destroy_url: event_guest_path(@event, guest) %>
+  <% end %>
 </div>

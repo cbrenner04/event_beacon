@@ -30,10 +30,9 @@ RSpec.describe 'Experiences', type: :feature do
     end
 
     it 'allows for deletion of guest', :js do
-      accept_alert do
-        guests_page.select_guest guest.first_name
-        guests_page.delete.click
-      end
+      guests_page.select_guest guest.first_name
+      guests_page.wait_for_accordion_to_open
+      accept_alert { guests_page.delete.click }
 
       guests_page.refresh
 
