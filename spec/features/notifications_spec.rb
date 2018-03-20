@@ -6,6 +6,7 @@ RSpec.describe 'Experiences', type: :feature do
   let(:user) { create :user }
   let(:event) { create :event }
   let(:guest) { create :guest, event: event }
+  let(:other_guest) { create :guest, event: event }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
   let(:notification_page) { Pages::Notifications::Show.new }
@@ -13,6 +14,7 @@ RSpec.describe 'Experiences', type: :feature do
 
   before do
     create :guests_notification, guest: guest, notification: notification
+    create :guests_notification, guest: other_guest, notification: notification
     log_in_user user
   end
 
@@ -48,8 +50,9 @@ RSpec.describe 'Experiences', type: :feature do
                                                        notification.id)
     end
 
-    it 'links to guest edit page' do
+    it 'links to guest edit page', :js do
       notification_page.select_guest guest.first_name
+      notification_page.wait_for_accordion_to_open
       notification_page.edit.click
 
       expect(current_path).to eq edit_event_guest_path(event.id, guest.id)
@@ -63,6 +66,17 @@ RSpec.describe 'Experiences', type: :feature do
       notification_page.refresh
 
       expect(notification_page).to have_no_text guest.first_name
+    end
+
+    describe 'when an attached guest is deleted' do
+      it 'list related guests' do
+        guest.destroy
+
+        notification_page.refresh
+
+        expect(notification_page).to_not have_text guest.full_name
+        expect(notification_page).to have_text other_guest.full_name
+      end
     end
   end
 

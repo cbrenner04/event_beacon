@@ -3,7 +3,7 @@
 <h1>Add guests to <%= @experience.name %> notification</h1>
 
 <div>
-  <% if @event.guests.count.zero? %>
+  <% if @potential_guests.count.zero? %>
     <p><i>Please <%= link_to "add Guests to this Event", event_guests_path(@event) %> before adding them to "<%= @experience.name %>"</i></p>
   <% else %>
     <p><i>Please check the box of the Guest(s) you would like to add to this Experience</i></p>
@@ -12,7 +12,7 @@
 
 <%= form_for :guests_notifications, url: event_experience_notification_guests_notifications_path(@event, @experience, @notification), method: :post do |f| %>
   <div class="row mt-3 mb-3">
-    <%= f.collection_check_boxes(:guest_ids, @event.guests.all, :id, :full_name) do |b| %>
+    <%= f.collection_check_boxes(:guest_ids, @potential_guests, :id, :full_name) do |b| %>
       <div class="col-4">
         <%= b.check_box %>
         <%= b.label do %>

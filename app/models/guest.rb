@@ -6,8 +6,7 @@ class Guest < ApplicationRecord
 
   has_many :guests_notifications, dependent: :destroy
   has_many :notifications, through: :guests_notifications,
-                           source: :notification,
-                           dependent: :destroy
+                           source: :notification
 
   enum notification_category: %i[text email both]
 
@@ -21,6 +20,8 @@ class Guest < ApplicationRecord
                     if: proc { |guest| guest.phone_number.blank? }
 
   default_scope { order(last_name: :asc, first_name: :asc) }
+  scope :not_related_to_notification,
+        ->(notification) { where.not(id: notification.guests.map(&:id)) }
 
   def full_name
     "#{first_name} #{last_name}"

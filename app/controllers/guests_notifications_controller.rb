@@ -4,6 +4,7 @@
 class GuestsNotificationsController < ApplicationController
   def new
     set_instance_variables
+    @potential_guests = @event.guests.not_related_to_notification(@notification)
   end
 
   def create
