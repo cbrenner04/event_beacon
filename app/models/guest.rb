@@ -14,10 +14,16 @@ class Guest < ApplicationRecord
                          if: proc { |guest| guest.last_name.blank? }
   validates :last_name, presence: true,
                         if: proc { |guest| guest.first_name.blank? }
-  validates :phone_number, presence: true,
-                           if: proc { |guest| guest.email.blank? }
-  validates :email, presence: true,
-                    if: proc { |guest| guest.phone_number.blank? }
+  validates :phone_number, uniqueness: {
+    scope: :event_id,
+    message: '- It looks like the guest shares a phone number with another ' \
+             'guest. If this is the case, please leave phone number blank.'
+  }
+  validates :email, uniqueness: {
+    scope: :event_id,
+    message: '- It looks like the guest shares an email with another guest. ' \
+             'If this is the case, please leave email blank.'
+  }
 
   default_scope { order(last_name: :asc, first_name: :asc) }
   scope :not_related_to_notification,

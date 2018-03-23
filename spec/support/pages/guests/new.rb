@@ -16,6 +16,10 @@ module Pages
         fill_in 'Email', with: guest_email
       end
 
+      def set_guest_phone_to(guest_phone)
+        fill_in 'Phone number', with: guest_phone
+      end
+
       def save
         click_on 'Save'
       end

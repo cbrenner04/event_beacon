@@ -36,11 +36,19 @@ RSpec.describe 'Experiences', type: :feature do
     before { visit new_event_experience_path(event) }
 
     it 'allows for adding experience information' do
-      new_experience_page.set_experience_name_to 'Foobar in the morning'
+      new_experience_name = 'Foobar in the morning'
+      new_experience_page.set_experience_name_to new_experience_name
       new_experience_page.save
 
-      expect(current_path).to eq event_experiences_path(event.id)
-      expect(new_experience_page).to have_text 'Foobar in the morning'
+      newly_created_experience = Experience.find_by(name: new_experience_name)
+
+      expect(current_path)
+        .to eq edit_event_experience_notification_path(
+          event.id,
+          newly_created_experience.id,
+          newly_created_experience.notification.id
+        )
+      expect(new_experience_page).to have_text new_experience_name
     end
 
     it 're-renders and gives correct error message if information is bad' do

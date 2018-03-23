@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Guest, type: :model do
-  let(:guest) { create :guest }
+  let(:event) { create :event }
+  let(:guest) { create :guest, event: event }
+  let!(:other_guest) { create :guest, event: event }
 
   describe 'validations' do
     it { expect(guest).to be_valid }
@@ -14,9 +16,13 @@ RSpec.describe Guest, type: :model do
       expect(guest).to be_invalid
     end
 
-    it 'is invalid without email and phone_number' do
-      guest.email = nil
-      guest.phone_number = nil
+    it 'is invalid if email is duplicate' do
+      guest.email = other_guest.email
+      expect(guest).to be_invalid
+    end
+
+    it 'is invalid if phone is duplicate' do
+      guest.phone_number = other_guest.phone_number
       expect(guest).to be_invalid
     end
   end

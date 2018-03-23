@@ -56,14 +56,22 @@ RSpec.describe 'Experiences', type: :feature do
     it 're-renders and gives correct error message if information is bad' do
       new_guest_page.set_guest_first_name_to ''
       new_guest_page.set_guest_last_name_to ''
+      new_guest_page.set_guest_email_to guest.email
+      new_guest_page.set_guest_phone_to guest.phone_number
       new_guest_page.save
 
       expect(new_guest_page).to have_text '4 errors prohibited this guest ' \
                                           'from being saved:'
       expect(new_guest_page).to have_text "First name can't be blank"
       expect(new_guest_page).to have_text "Last name can't be blank"
-      expect(new_guest_page).to have_text "Phone number can't be blank"
-      expect(new_guest_page).to have_text "Email can't be blank"
+      expect(new_guest_page)
+        .to have_text 'Phone number - It looks like the guest shares a phone ' \
+                      'number with another guest. If this is the case, ' \
+                      'please leave phone number blank.'
+      expect(new_guest_page)
+        .to have_text 'Email - It looks like the guest shares an email with ' \
+                      'another guest. If this is the case, please leave ' \
+                      'email blank.'
     end
   end
 

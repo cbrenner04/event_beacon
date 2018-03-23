@@ -15,8 +15,10 @@ class ExperiencesController < ApplicationController
     set_event
     @experience = @event.experiences.build(experience_params)
     if @experience.save
-      create_notification
-      redirect_to event_experiences_path(@event), notice: create_notice_message
+      notification = create_notification
+      redirect_to edit_event_experience_notification_path(@event, @experience,
+                                                          notification),
+                  notice: create_notice_message
     else
       render :new
     end
