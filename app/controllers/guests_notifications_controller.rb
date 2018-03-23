@@ -22,7 +22,7 @@ class GuestsNotificationsController < ApplicationController
   def destroy
     set_instance_variables
     @guests_notification = GuestsNotification.find(params[:id])
-    @guests_notification.delete
+    @guests_notification.destroy
     redirect_to(
       event_experience_notification_path(@event, @experience, @notification),
       notice: "The notification for #{@guests_notification.guest.full_name} " \
