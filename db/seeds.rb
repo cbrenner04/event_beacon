@@ -7,7 +7,7 @@ if Rails.env == 'development'
     # set up fake users
     foo = User.create(email: 'foo@ex.co', password: 'asdfasdf')
     bar = User.create(email: 'bar@ex.co', password: 'asdfasdf')
-    baz = User.create(email: 'baz@ex.co', password: 'asdfasdf')
+    User.create(email: 'baz@ex.co', password: 'asdfasdf')
     p '3 users created'
     # set up an event
     event =
@@ -38,7 +38,7 @@ if Rails.env == 'development'
     guest_3 = Guest.create(
       first_name: first_name = Faker::Name.unique.first_name,
       last_name: last_name = Faker::Name.unique.last_name,
-      phone_number: Faker::PhoneNumber.cell_phone.gsub!(/[^0-9]/, ''),
+      phone_number: Faker::PhoneNumber.cell_phone,
       email: "#{first_name.downcase}.#{last_name.downcase}@example.com",
       notification_category: %i[text email both].sample,
       event: event
@@ -46,7 +46,7 @@ if Rails.env == 'development'
     guest_4 = Guest.create(
       first_name: first_name = Faker::Name.unique.first_name,
       last_name: last_name = Faker::Name.unique.last_name,
-      phone_number: Faker::PhoneNumber.cell_phone.gsub!(/[^0-9]/, ''),
+      phone_number: Faker::PhoneNumber.cell_phone,
       email: "#{first_name.downcase}.#{last_name.downcase}@example.com",
       notification_category: %i[text email both].sample,
       event: event
@@ -54,7 +54,7 @@ if Rails.env == 'development'
     guest_5 = Guest.create(
       first_name: first_name = Faker::Name.unique.first_name,
       last_name: last_name = Faker::Name.unique.last_name,
-      phone_number: Faker::PhoneNumber.cell_phone.gsub!(/[^0-9]/, ''),
+      phone_number: Faker::PhoneNumber.cell_phone,
       email: "#{first_name.downcase}.#{last_name.downcase}@example.com",
       notification_category: %i[text email both].sample,
       event: event

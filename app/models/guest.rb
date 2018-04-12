@@ -15,11 +15,13 @@ class Guest < ApplicationRecord
   validates :last_name, presence: true,
                         if: proc { |guest| guest.first_name.blank? }
   validates :phone_number, uniqueness: {
+    allow_blank: true,
     scope: :event_id,
     message: '- It looks like the guest shares a phone number with another ' \
              'guest. If this is the case, please leave phone number blank.'
   }
   validates :email, uniqueness: {
+    allow_blank: true,
     scope: :event_id,
     message: '- It looks like the guest shares an email with another guest. ' \
              'If this is the case, please leave email blank.'
@@ -28,6 +30,10 @@ class Guest < ApplicationRecord
   default_scope { order(last_name: :asc, first_name: :asc) }
   scope :not_related_to_notification,
         ->(notification) { where.not(id: notification.guests.map(&:id)) }
+
+  def phone_number=(value)
+    super(value.blank? ? '' : value.gsub(/[^0-9]/, ''))
+  end
 
   def full_name
     "#{first_name} #{last_name}"
