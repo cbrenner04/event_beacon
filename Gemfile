@@ -8,26 +8,27 @@ git_source(:github) do |repo_name|
 end
 
 gem 'bitly', '~> 1.1', '>= 1.1.1'
-gem 'bootstrap', '~> 4.0.0.beta2.1'
-gem 'coffee-rails', '~> 4.2'
-gem 'devise', '~> 4.3'
-gem 'font-awesome-rails', '~> 4.7', '>= 4.7.0.2'
+gem 'bootstrap', '~> 4.0'
+gem 'coffee-rails', '~> 4.2', '>= 4.2.2'
+gem 'devise', '~> 4.4', '>= 4.4.3'
+gem 'font-awesome-rails', '~> 4.7', '>= 4.7.0.3'
 gem 'gretel', '~> 3.0', '>= 3.0.9'
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.7'
 gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
-gem 'pg', '~> 0.21.0'
-gem 'puma', '~> 3.7'
-gem 'rails', '~> 5.1.4'
+gem 'pg', '~> 1.0'
+gem 'puma', '~> 3.11', '>= 3.11.3'
+gem 'rails', '~> 5.1', '>= 5.1.6'
 gem 'redcarpet', '~> 3.4'
-gem 'sass-rails', '~> 5.0'
-gem 'simplecov', '~> 0.15.1'
-gem 'turbolinks', '~> 5'
-gem 'twilio-ruby', '~> 5.6'
-gem 'uglifier', '>= 1.3.0'
+gem 'sass-rails', '~> 5.0', '>= 5.0.7'
+gem 'simplecov', '~> 0.16.1'
+gem 'turbolinks', '~> 5.1'
+gem 'twilio-ruby', '~> 5.7', '>= 5.7.2'
+gem 'uglifier', '~> 4.1', '>= 4.1.8'
 
 group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '~> 2.16', '>= 2.16.1'
+  gem 'bundler-audit', '~> 0.6.0'
+  gem 'byebug', '~> 10.0', '>= 10.0.2', platforms: %i[mri mingw x64_mingw]
+  gem 'capybara', '~> 2.18'
   gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
   gem 'dotenv-rails', '~> 2.2', '>= 2.2.1'
   gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
@@ -36,16 +37,16 @@ group :development, :test do
   gem 'poltergeist', '~> 1.17'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'
   gem 'rspec-rails', '~> 3.7', '>= 3.7.2'
-  gem 'site_prism', '~> 2.9', '>= 2.9.1'
+  gem 'site_prism', '~> 2.11'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '~> 3.1', '>= 3.1.5'
   gem 'rails-erd', '~> 1.5', '>= 1.5.2'
-  gem 'rubocop', '~> 0.51.0'
+  gem 'rubocop', '~> 0.54.0'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'spring-watcher-listen', '~> 2.0', '>= 2.0.1'
+  gem 'web-console', '~> 3.5', '>= 3.5.1'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

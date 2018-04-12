@@ -5,7 +5,7 @@ SimpleCov.start 'rails'
 SimpleCov.minimum_coverage 90
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 abort("The Rails environment's running in production!") if Rails.env.production?
 require 'rspec/rails'
 require 'capybara/rails'
@@ -15,11 +15,11 @@ Capybara.javascript_driver = :poltergeist
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, js_errors: false)
 end
-include Warden::Test::Helpers
 Warden.test_mode!
 ActiveRecord::Migration.maintain_test_schema!
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 RSpec.configure do |config|
+  include Warden::Test::Helpers
   config.example_status_persistence_file_path = 'spec/examples.txt'
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = false
