@@ -4,6 +4,11 @@ require 'faker'
 if Rails.env == 'development'
   # run as a transaction
   ActiveRecord::Base.transaction do
+    # set up data encryption key
+    dek = DataEncryptionKey.generate!
+    p "1 data encryption key generated"
+    dek.promote!
+    p "1 data encryption key promoted"
     # set up fake users
     foo = User.create(email: 'foo@ex.co', password: 'asdfasdf')
     bar = User.create(email: 'bar@ex.co', password: 'asdfasdf')

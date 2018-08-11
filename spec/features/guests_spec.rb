@@ -5,13 +5,14 @@ require 'rails_helper'
 RSpec.describe 'Experiences', type: :feature do
   let(:user) { create :user }
   let(:event) { create :event }
-  let!(:guest) { create :guest, event: event }
+  let(:guest) { build :guest, event: event }
   let(:guests_page) { Pages::Guests::Index.new }
   let(:new_guest_page) { Pages::Guests::New.new }
   let(:edit_guest_page) { Pages::Guests::Edit.new }
 
   before do
     create :users_event, user: user, event: event
+    guest.save
     log_in_user user
   end
 
@@ -20,6 +21,8 @@ RSpec.describe 'Experiences', type: :feature do
 
     it 'lists guests related to the event' do
       expect(guests_page).to have_text guest.first_name
+      expect(guests_page).to have_text guest.last_name
+      expect(guests_page).to have_text 'text, email'
     end
 
     it 'links to guest edit page' do

@@ -13,6 +13,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    dek = DataEncryptionKey.generate!
+    dek.promote!
     stub_const('SmsNotifier', MockSmsNotifier)
     stub_const('Bitly', MockBitly)
   end

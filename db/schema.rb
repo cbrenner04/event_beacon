@@ -10,10 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171222175018) do
+ActiveRecord::Schema.define(version: 20180728204849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "data_encryption_keys", force: :cascade do |t|
+    t.string "encrypted_key", null: false
+    t.string "encrypted_key_iv"
+    t.boolean "primary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "encrypted_fields", force: :cascade do |t|
+    t.string "encrypted_blob", null: false
+    t.string "encrypted_blob_iv"
+    t.bigint "data_encryption_key_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["data_encryption_key_id"], name: "index_encrypted_fields_on_data_encryption_key_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "name", null: false
@@ -35,12 +52,12 @@ ActiveRecord::Schema.define(version: 20171222175018) do
   create_table "guests", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "phone_number"
-    t.string "email"
     t.integer "notification_category"
     t.bigint "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "email_encrypted_field_id"
+    t.integer "phone_number_encrypted_field_id"
     t.index ["event_id"], name: "index_guests_on_event_id"
   end
 
@@ -90,6 +107,7 @@ ActiveRecord::Schema.define(version: 20171222175018) do
     t.index ["user_id"], name: "index_users_events_on_user_id"
   end
 
+  add_foreign_key "encrypted_fields", "data_encryption_keys"
   add_foreign_key "experiences", "events"
   add_foreign_key "guests", "events"
   add_foreign_key "notifications", "experiences"

@@ -5,14 +5,15 @@ require 'rails_helper'
 RSpec.describe 'Experiences', type: :feature do
   let(:user) { create :user }
   let(:event) { create :event }
-  let(:guest) { create :guest, event: event }
-  let(:other_guest) { create :guest, event: event }
+  let(:guest) { build :guest, event: event }
+  let(:other_guest) { build :guest, event: event }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
   let(:notification_page) { Pages::Notifications::Show.new }
   let(:edit_notification_page) { Pages::Notifications::Edit.new }
 
   before do
+    [guest, other_guest].each(&:save)
     create :guests_notification, guest: guest, notification: notification
     create :guests_notification, guest: other_guest, notification: notification
     log_in_user user

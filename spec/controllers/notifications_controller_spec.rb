@@ -8,7 +8,7 @@ RSpec.describe NotificationsController do
   let(:guest) { create :guest, event: event }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
-  let!(:guests_notification) do
+  let(:guests_notification) do
     create :guests_notification, guest: guest, notification: notification
   end
 
@@ -48,6 +48,7 @@ RSpec.describe NotificationsController do
     end
 
     it 'assigns the related guests as @guests' do
+      guests_notification.save
       get :show, params: {
         event_id: event.id,
         experience_id: experience.id,
@@ -90,6 +91,7 @@ RSpec.describe NotificationsController do
     end
 
     it 'assigns the related guests as @guests' do
+      guests_notification.save
       get :edit, params: {
         event_id: event.id,
         experience_id: experience.id,

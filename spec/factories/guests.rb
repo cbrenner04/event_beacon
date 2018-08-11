@@ -8,7 +8,7 @@ FactoryBot.define do
     last_name { Faker::Name.unique.last_name }
     email { Faker::Internet.safe_email }
     sequence(:phone_number) { |n| "123456#{n}" }
-    notification_category nil
+    notification_category 'both'
     event
   end
 end

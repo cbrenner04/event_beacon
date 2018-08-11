@@ -5,9 +5,12 @@ require 'rails_helper'
 RSpec.describe GuestsController do
   let(:user) { create :user }
   let(:event) { create :event }
-  let!(:guest) { create :guest, event: event }
+  let(:guest) { build :guest, event: event }
 
-  before { sign_in user }
+  before do
+    guest.save
+    sign_in user
+  end
 
   describe 'GET #index' do
     it 'assigns the requested event as @event' do

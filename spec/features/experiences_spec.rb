@@ -6,13 +6,14 @@ RSpec.describe 'Experiences', type: :feature do
   let(:user) { create :user }
   let(:event) { create :event }
   let(:experience) { create :experience, event: event, name: 'asdf' }
-  let!(:notification) { create :notification, experience: experience }
+  let(:notification) { build :notification, experience: experience }
   let(:experiences_page) { Pages::Experiences::Index.new }
   let(:new_experience_page) { Pages::Experiences::New.new }
   let(:edit_experience_page) { Pages::Experiences::Edit.new }
 
   before do
     create :users_event, user: user, event: event
+    notification.save
     log_in_user user
   end
 

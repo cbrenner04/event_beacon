@@ -1,0 +1,44 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/event_beacon
+    docker:
+      - image: circleci/ruby:2.4.1-node-browsers
+        environment:
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          PGUSER: event_beacon
+          RAILS_ENV: test
+      - image: circleci/postgres:10.4-alpine
+        environment:
+          POSTGRES_USER: event_beacon
+          POSTGRES_DB: event_beacon_test
+          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v2-ruby-dependencies-{{ checksum "Gemfile.lock" }}
+          - v2-ruby-dependencies-
+      - run:
+          name: install ruby dependencies
+          command: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          key: v2-ruby-dependencies-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ./vendor/bundle
+      - run:
+          name: wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: setup db
+          command: bin/rails db:schema:load --trace
+      - run:
+          name: ruby tests
+          command: bundle exec rspec
+      - run:
+          name: rubocop
+          command: bundle exec rubocop
+      - run:
+          name: bundle audit
+          command: bundle exec bundle audit check --update

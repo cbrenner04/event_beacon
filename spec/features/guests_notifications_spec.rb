@@ -6,9 +6,9 @@ RSpec.feature 'Guests Notifications' do
   let(:user) { create :user }
   # for event with guests
   let(:event) { create :event }
-  let!(:guest) { create :guest, event: event, first_name: 'Joe' }
-  let!(:other_guest) { create :guest, event: event, first_name: 'Boe' }
-  let!(:third_guest) { create :guest, event: event, first_name: 'Hoe' }
+  let(:guest) { build :guest, event: event, first_name: 'Joe' }
+  let(:other_guest) { build :guest, event: event, first_name: 'Boe' }
+  let(:third_guest) { build :guest, event: event, first_name: 'Hoe' }
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
   # for event without guests
@@ -24,6 +24,7 @@ RSpec.feature 'Guests Notifications' do
   describe 'new' do
     context 'when guests exist for event' do
       before do
+        [guest, other_guest, third_guest].each(&:save)
         visit new_event_experience_notification_guests_notification_path(
           event, experience, notification
         )

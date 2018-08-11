@@ -23,10 +23,6 @@ class Experience < ApplicationRecord
     occurs_at.strftime('%-m/%-d/%y %l:%M %P')
   end
 
-  def pretty_time_to_send_notification
-    time_to_send_notification.strftime('%-m/%-d/%y %l:%M %P')
-  end
-
   private
 
   def offset_in_seconds

@@ -7,6 +7,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'aes', '~> 0.5.0'
+gem 'attr_encrypted', '~> 3.1'
 gem 'bitly', '~> 1.1', '>= 1.1.1'
 gem 'bootstrap', '~> 4.0'
 gem 'coffee-rails', '~> 4.2', '>= 4.2.2'
