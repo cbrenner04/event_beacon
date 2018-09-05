@@ -10,9 +10,9 @@ if Rails.env == 'development'
     dek.promote!
     p "1 data encryption key promoted"
     # set up fake users
-    foo = User.create(email: 'foo@ex.co', password: 'asdfasdf')
-    bar = User.create(email: 'bar@ex.co', password: 'asdfasdf')
-    User.create(email: 'baz@ex.co', password: 'asdfasdf')
+    foo = User.create(email: 'foo@ex.co', password: 'asdfasdf', confirmed_at: Time.now)
+    bar = User.create(email: 'bar@ex.co', password: 'asdfasdf', confirmed_at: Time.now)
+    User.create(email: 'baz@ex.co', password: 'asdfasdf', confirmed_at: Time.now)
     p '3 users created'
     # set up an event
     event =

@@ -26,8 +26,9 @@ RSpec.describe 'Contacts', type: :feature do
       new_contact_page.set_subject_to ''
       new_contact_page.save
 
-      expect(new_contact_page).to have_text '2 errors prohibited this contact_us ' \
-                                          'from being saved:'
+      expect(new_contact_page)
+        .to have_text '2 errors prohibited this ' \
+                      'contact_us from being saved:'
       expect(new_contact_page).to have_text "Subject can't be blank"
       expect(new_contact_page).to have_text "Body can't be blank"
     end

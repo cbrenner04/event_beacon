@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { confirmations: 'confirmations' }
+  devise_scope :user do
+    patch "/users/confirmation" => "confirmations#confirm"
+  end
   resources :events, only: %i[index show new create edit update] do
     resources :experiences, only: %i[index new create edit update] do
       resources :notifications, only: %i[show edit update] do
