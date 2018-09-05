@@ -2,12 +2,19 @@
 
 # controller for contact us
 class ContactsController < ApplicationController
+  before_action :authenticate_user!, except: %i[new create]
+
   def new
     @contact = Contact.new
   end
 
   def create
-    @contact = current_user.contacts.build(contact_params)
+    @contact = if current_user
+                 current_user.contacts.build(contact_params)
+               else
+                 Contact.new(contact_params)
+               end
+
     if @contact.save
       redirect_to root_path, notice: 'Sent successfully.'
     else

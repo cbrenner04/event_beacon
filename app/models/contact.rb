@@ -2,7 +2,7 @@
 
 # model for contact us records
 class Contact < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :subject, :body, presence: true
 end
