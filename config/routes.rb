@@ -10,5 +10,10 @@ Rails.application.routes.draw do
     resources :guests, only: %i[index new create edit update destroy]
   end
   resource :short_url, only: :show
+  resource :end_user_agreement, only: :show
+  resource :privacy_policy, only: :show
+  resource :terms_and_conditions, only: :show
+  get 'contact_us', to: 'contacts#new'
+  resources :contacts, only: [:create]
   root to: 'events#index'
 end

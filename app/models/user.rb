@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   has_many :users_events, dependent: :destroy
   has_many :events, through: :users_events, source: :event, dependent: :destroy
+  has_many :contacts, dependent: :destroy
 
   validates :email, presence: true
 end
