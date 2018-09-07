@@ -10,5 +10,7 @@ FactoryBot.define do
     sequence(:phone_number) { |n| "123456#{n}" }
     notification_category 'both'
     event
+    welcome_email_sent_at Time.zone.now
+    welcome_sms_sent_at Time.zone.now
   end
 end

@@ -4,11 +4,24 @@
   <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
+    <small class="form-text text-muted">How the event will be identified to guests in notifications</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :nickname %>
+    <%= f.text_field :nickname, class: "form-control" %>
+    <small class="form-text text-muted">Optional name for quick identification. Used only in EventBeacon.</small>
   </div>
 
   <div class="form-group">
     <%= f.label :occurs_at %>
     <%= f.datetime_select :occurs_at %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :organizer %>
+    <%= f.text_field :organizer, class: "form-control" %>
+    <small class="form-text text-muted">How you will be identified to guests in notifications</small>
   </div>
 
   <%= f.submit "Save", class: "btn btn-primary" %>

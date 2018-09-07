@@ -48,7 +48,8 @@ RSpec.describe EventsController do
           post :create, params: {
             event: {
               name: 'foobaz',
-              occurs_at: Time.zone.now
+              occurs_at: Time.zone.now,
+              organizer: 'foo'
             }
           }
         end.to change(Event, :count).by 1
@@ -59,7 +60,8 @@ RSpec.describe EventsController do
           post :create, params: {
             event: {
               name: 'asdf',
-              occurs_at: Time.zone.now
+              occurs_at: Time.zone.now,
+              organizer: 'asdf'
             }
           }
         end.to change(UsersEvent, :count).by 1

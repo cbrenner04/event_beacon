@@ -8,6 +8,14 @@ module Pages
         fill_in 'Name', with: event_name
       end
 
+      def set_nickname_to(nickname)
+        fill_in 'Nickname', with: nickname
+      end
+
+      def set_organizer_to(organizer)
+        fill_in 'Organizer', with: organizer
+      end
+
       def save
         click_on 'Save'
       end

@@ -17,5 +17,10 @@ RSpec.describe Event, type: :model do
       event.occurs_at = nil
       expect(event).to be_invalid
     end
+
+    it 'is invalid without organizer' do
+      event.organizer = nil
+      expect(event).to be_invalid
+    end
   end
 end

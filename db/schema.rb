@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180905132609) do
+ActiveRecord::Schema.define(version: 20180907134544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,10 @@ ActiveRecord::Schema.define(version: 20180905132609) do
     t.datetime "occurs_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nickname", null: false
+    t.string "organizer", null: false
+    t.text "welcome_sms"
+    t.text "welcome_email"
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -67,6 +71,8 @@ ActiveRecord::Schema.define(version: 20180905132609) do
     t.datetime "updated_at", null: false
     t.integer "email_encrypted_field_id"
     t.integer "phone_number_encrypted_field_id"
+    t.datetime "welcome_email_sent_at"
+    t.datetime "welcome_sms_sent_at"
     t.index ["event_id"], name: "index_guests_on_event_id"
   end
 
@@ -102,7 +108,6 @@ ActiveRecord::Schema.define(version: 20180905132609) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "unconfirmed_email"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
