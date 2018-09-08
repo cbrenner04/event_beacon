@@ -32,10 +32,11 @@ module Tasks
       send_first_email_for(guest, email_body)
     end
 
-    def self.send_first_sms_for(guest, notification)
+    def self.send_first_sms_for(guest, message)
       logger.info "sending first sms to guest #{guest.id}"
       SmsNotifier.send_sms(number: guest.phone_number,
-                           message: notification)
+                           message: message)
+      guest.update_attributes(welcome_sms_sent_at: Time.zone.now)
     end
 
     def self.send_sms_for(guest, notification)
@@ -45,13 +46,14 @@ module Tasks
                            message: notification.sms_body)
     end
 
-    def self.send_first_email_for(guest, notification)
+    def self.send_first_email_for(guest, message)
       logger.info "sending first email to guest #{guest.id}"
       NotificationMailer.email(
         guest_email: guest.email,
         subject: "You've been signed up for notifications",
-        message: notification
+        message: message
       ).deliver_now
+      guest.update_attributes(welcome_email_sent_at: Time.zone.now)
     end
 
     def self.send_email_for(guest, notification)

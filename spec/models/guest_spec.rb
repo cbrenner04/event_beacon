@@ -36,4 +36,108 @@ RSpec.describe Guest, type: :model do
       expect(guest.full_name).to eq 'foo bar'
     end
   end
+
+  describe 'callbacks' do
+    describe 'after_create' do
+      it 'sends welcome notifications' do
+        guest = Guest.create!(
+          event: event,
+          first_name: 'Foo',
+          last_name: 'Bar',
+          email: 'foo@example.com',
+          phone_number: '1234567890',
+          notification_category: 'both'
+        )
+        guest.reload
+        expect(guest.welcome_email_sent_at).to_not be_nil
+        expect(guest.welcome_sms_sent_at).to_not be_nil
+      end
+    end
+
+    describe 'after_update' do
+      describe 'when notification category does not change' do
+        it 'does not send notifications' do
+          expect do
+            guest.update!(first_name: 'Foobar')
+          end.to_not change { guest }
+        end
+      end
+
+      describe 'when notification category changes from email to text' do
+        it 'sends text initial text notification' do
+          guest = Guest.create!(
+            event: event,
+            first_name: 'Foo',
+            last_name: 'Bar',
+            email: 'foo@example.com',
+            phone_number: '1234567890',
+            notification_category: 'email'
+          )
+          guest.reload
+          expect(guest.welcome_sms_sent_at).to be_nil
+          expect do
+            guest.update!(notification_category: 'text')
+          end.to change { guest.welcome_sms_sent_at }
+          expect(guest.welcome_sms_sent_at).to_not be_nil
+        end
+      end
+
+      describe 'when notification category changes from text to email' do
+        it 'sends initial email notification' do
+          guest = Guest.create!(
+            event: event,
+            first_name: 'Foo',
+            last_name: 'Bar',
+            email: 'foo@example.com',
+            phone_number: '1234567890',
+            notification_category: 'text'
+          )
+          guest.reload
+          expect(guest.welcome_email_sent_at).to be_nil
+          expect do
+            guest.update!(notification_category: 'email')
+          end.to change { guest.welcome_email_sent_at }
+          expect(guest.welcome_email_sent_at).to_not be_nil
+        end
+      end
+
+      describe 'when notification category changes from email to both' do
+        it 'sends initial text notifications' do
+          guest = Guest.create!(
+            event: event,
+            first_name: 'Foo',
+            last_name: 'Bar',
+            email: 'foo@example.com',
+            phone_number: '1234567890',
+            notification_category: 'email'
+          )
+          guest.reload
+          expect(guest.welcome_sms_sent_at).to be_nil
+          expect do
+            guest.update!(notification_category: 'both')
+          end.to change { guest.welcome_sms_sent_at }
+          expect(guest.welcome_sms_sent_at).to_not be_nil
+        end
+      end
+
+      describe 'when notification category changes from text to both' do
+        it 'sends initial email notifications' do
+          guest = Guest.create!(
+            event: event,
+            first_name: 'Foo',
+            last_name: 'Bar',
+            email: 'foo@example.com',
+            phone_number: '1234567890',
+            notification_category: 'text'
+          )
+          guest.reload
+          expect(guest.welcome_email_sent_at).to be_nil
+          expect do
+            guest.update!(notification_category: 'both')
+          end.to change { guest.welcome_email_sent_at }
+          expect(guest.welcome_email_sent_at).to_not be_nil
+        end
+      end
+    end
+  end
 end

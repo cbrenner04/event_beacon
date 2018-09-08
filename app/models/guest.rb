@@ -32,7 +32,7 @@ class Guest < ApplicationRecord
         ->(notification) { where.not(id: notification.guests.map(&:id)) }
 
   after_create :send_welcome_notifications
-  before_update :send_welcome_notifications, if: :needs_welcome?
+  after_update :send_welcome_notifications, if: :needs_welcome?
 
   def email=(val)
     return unless val
@@ -105,7 +105,7 @@ class Guest < ApplicationRecord
   end
 
   def needs_welcome?
-    return false unless notification_category_changed?
+    return false unless saved_change_to_notification_category?
     return true if %w[text both].include?(notification_category) &&
                    welcome_sms_sent_at.nil?
     return true if %w[email both].include?(notification_category) &&

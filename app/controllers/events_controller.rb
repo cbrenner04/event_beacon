@@ -42,8 +42,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event)
-          .permit(:name, :occurs_at, :nickname, :organizer,
-                  :welcome_sms, :welcome_email)
+    params.require(:event).permit(:name, :occurs_at, :nickname, :organizer)
   end
 end
