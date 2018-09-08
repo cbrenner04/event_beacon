@@ -48,8 +48,6 @@ ActiveRecord::Schema.define(version: 20180907134544) do
     t.datetime "updated_at", null: false
     t.string "nickname", null: false
     t.string "organizer", null: false
-    t.text "welcome_sms"
-    t.text "welcome_email"
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -108,6 +106,7 @@ ActiveRecord::Schema.define(version: 20180907134544) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "unconfirmed_email"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
