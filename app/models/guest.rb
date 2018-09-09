@@ -31,6 +31,9 @@ class Guest < ApplicationRecord
   scope :not_related_to_notification,
         ->(notification) { where.not(id: notification.guests.map(&:id)) }
 
+  after_create :send_welcome_notifications
+  after_update :send_welcome_notifications, if: :needs_welcome?
+
   def email=(val)
     return unless val
     email_encrypted_field.blob = val
@@ -86,14 +89,30 @@ class Guest < ApplicationRecord
     )
   end
 
+  def guest_phone_numbers
+    Guest.where.not(id: id).where(event_id: event_id).map(&:phone_number)
+  end
+
   def phone_number_validator
-    phone_numbers =
-      Guest.where.not(id: id).where(event_id: event_id).map(&:phone_number)
-    return unless phone_numbers.include?(phone_number)
-    errors.add(
-      :phone_number,
-      '- It looks like the guest shares a phone number with another guest.' \
-      ' If this is the case, please leave phone number blank.'
-    )
+    return if phone_number.blank?
+    if phone_number&.length != 10
+      errors.add(:phone_number, 'must be 10 characters')
+    end
+    return unless guest_phone_numbers.include?(phone_number)
+    errors.add(:phone_number, '- It looks like the guest shares a phone ' \
+                              'number with another guest. If this is the ' \
+                              'case, please leave phone number blank.')
+  end
+
+  def send_welcome_notifications
+    Tasks::Notifier.send_first_notification(self)
+  end
+
+  def needs_welcome?
+    return false unless saved_change_to_notification_category?
+    return true if %w[text both].include?(notification_category) &&
+                   welcome_sms_sent_at.nil?
+    return true if %w[email both].include?(notification_category) &&
+                   welcome_email_sent_at.nil?
   end
 end

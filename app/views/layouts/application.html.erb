@@ -10,7 +10,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style="margin-bottom: 70px">
     <div class="container-fluid">
       <%= render "layouts/nav" %>
 
@@ -21,6 +21,7 @@
         <%= render "layouts/alert" %>
         <%= yield %>
       </div>
+      <%= render "layouts/footer" %>
     </div>
   </body>
 </html>

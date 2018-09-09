@@ -16,6 +16,49 @@ RSpec.describe NotificationsController do
     sign_in user
   end
 
+  describe 'GET #new' do
+    it 'assigns the variables' do
+      get :new, params: {
+        event_id: event.id
+      }
+
+      expect(assigns(:event)).to eq event
+      expect(assigns(:notification)).to be_a_new(Notification)
+    end
+  end
+
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'creates experience, notification and calls notifier' do
+        allow(Tasks::Notifier).to receive(:send_to_all_now)
+        expect do
+          post :create, params: {
+            event_id: event.id,
+            notification: {
+              sms_body: 'foo',
+              email_body: 'bar'
+            }
+          }
+        end.to change(Event, :count).by(1).and(
+          change(Experience, :count).by(1)
+        )
+        expect(Tasks::Notifier).to have_received(:send_to_all_now)
+      end
+    end
+
+    context 'with invalid params' do
+      it 're-renders new' do
+        post :create, params: {
+          event_id: event.id,
+          notification: {
+            sms_body: nil
+          }
+        }
+        expect(response).to render_template :new
+      end
+    end
+  end
+
   describe 'GET #show' do
     it 'assigns the related experience as @experience' do
       get :show, params: {

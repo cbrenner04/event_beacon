@@ -18,7 +18,8 @@
 
   <div class="form-group">
     <%= f.label :phone_number %>
-    <%= f.text_field :phone_number, class: "form-control" %>
+    <%= f.text_field :phone_number, class: "form-control",  pattern: "[0-9]+", minlength: "10", maxlength: "10" %>
+    <small class="form-text text-muted">Do not add leading 1.</small>
   </div>
 
   <div class="form-group">

@@ -10,6 +10,7 @@ RSpec.describe 'Experiences', type: :feature do
   let(:experience) { create :experience, event: event }
   let(:notification) { create :notification, experience: experience }
   let(:notification_page) { Pages::Notifications::Show.new }
+  let(:new_notification_page) { Pages::Notifications::New.new }
   let(:edit_notification_page) { Pages::Notifications::Edit.new }
 
   before do
@@ -17,6 +18,96 @@ RSpec.describe 'Experiences', type: :feature do
     create :guests_notification, guest: guest, notification: notification
     create :guests_notification, guest: other_guest, notification: notification
     log_in_user user
+  end
+
+  describe 'new' do
+    before do
+      visit new_event_notification_path(event)
+    end
+
+    it 'creates a new notification' do
+      sms_body = 'SMS FOOBAR BODY'
+      email_body = 'EMAIL FOOBAZ BODY'
+
+      allow(Tasks::Notifier).to receive(:send_to_all_now)
+
+      expect do
+        new_notification_page.set_sms_body_to sms_body
+        new_notification_page.set_email_body_to email_body
+        new_notification_page.save
+      end.to change(Notification, :count).by(1)
+
+      expect(Tasks::Notifier).to have_received(:send_to_all_now)
+      expect(current_path).to eq event_path(event.id)
+    end
+
+    it 'updates sms body character count', :js do
+      starting_character_count = 0
+
+      expect(new_notification_page)
+        .to have_text "#{starting_character_count} characters"
+
+      new_notification_page.set_sms_body_to 'foo'
+
+      expect(new_notification_page)
+        .to have_text "#{starting_character_count + 3} characters"
+    end
+
+    it 'allows for appending a bitly link to the sms body', :js do
+      link_url = 'https://www.google.com'
+      sms_body = 'hello'
+
+      new_notification_page.set_sms_body_to sms_body
+      starting_character_count = sms_body.length
+      new_notification_page.set_sms_link_to link_url
+      new_notification_page.append_sms_link
+
+      mock_bitly_link = ' short.url'
+      sms_body_input_text = ''
+
+      wait_for do
+        sms_body_input_text = new_notification_page.sms_body.value
+        sms_body_input_text.include? mock_bitly_link
+      end
+
+      expect(sms_body_input_text)
+        .to eq "#{sms_body}#{mock_bitly_link}"
+
+      new_character_count = starting_character_count + mock_bitly_link.length
+
+      expect(new_notification_page)
+        .to have_text "#{new_character_count} characters"
+      expect(new_notification_page)
+        .to have_text "Current SMS link: #{link_url}"
+    end
+
+    it 'shows live preview and parses markdown of email body', :js do
+      link_text = 'link'
+      link_value = 'https://www.google.com'
+
+      new_notification_page.set_email_body_to "[#{link_text}](#{link_value})"
+      email_body_input_text = ''
+
+      wait_for do
+        new_notification_page.mock_key_up
+        email_body_input_text = new_notification_page.email_preview.text
+        email_body_input_text == link_text
+      end
+
+      expect(email_body_input_text).to eq link_text
+      expect(new_notification_page).to have_css "a[href='#{link_value}']"
+    end
+
+    it 're-renders and gives correct error message if information is bad' do
+      new_notification_page.set_sms_body_to ''
+      new_notification_page.save
+
+      expect(new_notification_page).to have_text '2 errors prohibited this ' \
+                                                  'notification from being ' \
+                                                  'saved:'
+      expect(new_notification_page).to have_text "Sms body can't be blank"
+      expect(new_notification_page).to have_text "Email body can't be blank"
+    end
   end
 
   describe 'show' do

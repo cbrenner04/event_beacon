@@ -9,6 +9,8 @@ module Pages
 
       def select_guest(guest_name)
         click_on guest_name
+      rescue Capybara::Poltergeist::MouseEventFailed
+        find('button', text: guest_name).trigger('click')
       end
 
       def wait_for_accordion_to_open

@@ -11,7 +11,8 @@ class Experience < ApplicationRecord
   default_scope { order(occurs_at: :asc) }
 
   def needs_notifying?
-    time_to_send_notification > Time.zone.now - 599 &&
+    ten_minutes_less_one_second_ago = Time.zone.now - 599
+    time_to_send_notification > ten_minutes_less_one_second_ago &&
       time_to_send_notification <= Time.zone.now
   end
 

@@ -3,7 +3,7 @@ crumb :root do
 end
 
 crumb :event do |event|
-  link event.name, event_path(event)
+  link event.nickname, event_path(event)
 end
 
 crumb :new_event do
@@ -11,7 +11,7 @@ crumb :new_event do
 end
 
 crumb :edit_event do |event|
-  link "Edit #{event.name}", edit_event_path(event)
+  link "Edit #{event.nickname}", edit_event_path(event)
 end
 
 crumb :guests do |event|
@@ -48,6 +48,12 @@ crumb :notification do |event, experience, notification|
   link "#{experience.name} Notification",
        event_experience_notification_path(event, experience, notification)
   parent :experiences, event
+end
+
+crumb :new_notification do |event, notification|
+  link "New #{event.nickname} Notification",
+       new_event_notification_path(event, notification)
+  parent :event, event
 end
 
 crumb :edit_notification do  |event, experience, notification|

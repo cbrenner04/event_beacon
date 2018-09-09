@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180728204849) do
+ActiveRecord::Schema.define(version: 20180907134544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contacts", force: :cascade do |t|
+    t.string "subject", null: false
+    t.text "body", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
 
   create_table "data_encryption_keys", force: :cascade do |t|
     t.string "encrypted_key", null: false
@@ -37,6 +46,8 @@ ActiveRecord::Schema.define(version: 20180728204849) do
     t.datetime "occurs_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nickname", null: false
+    t.string "organizer", null: false
   end
 
   create_table "experiences", force: :cascade do |t|
@@ -58,6 +69,8 @@ ActiveRecord::Schema.define(version: 20180728204849) do
     t.datetime "updated_at", null: false
     t.integer "email_encrypted_field_id"
     t.integer "phone_number_encrypted_field_id"
+    t.datetime "welcome_email_sent_at"
+    t.datetime "welcome_sms_sent_at"
     t.index ["event_id"], name: "index_guests_on_event_id"
   end
 
@@ -93,6 +106,11 @@ ActiveRecord::Schema.define(version: 20180728204849) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "unconfirmed_email"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -107,6 +125,7 @@ ActiveRecord::Schema.define(version: 20180728204849) do
     t.index ["user_id"], name: "index_users_events_on_user_id"
   end
 
+  add_foreign_key "contacts", "users"
   add_foreign_key "encrypted_fields", "data_encryption_keys"
   add_foreign_key "experiences", "events"
   add_foreign_key "guests", "events"

@@ -19,7 +19,7 @@ class EventsController < ApplicationController
     if @event.save
       UsersEvent.create(user: current_user, event: @event)
       redirect_to events_path,
-                  notice: "#{@event.name} was created successfully."
+                  notice: "#{@event.nickname} was created successfully."
     else
       render :new
     end
@@ -33,7 +33,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     if @event.update(event_params)
       redirect_to events_path,
-                  notice: "#{@event.name} was updated successfully."
+                  notice: "#{@event.nickname} was updated successfully."
     else
       render :edit
     end
@@ -42,6 +42,6 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :occurs_at)
+    params.require(:event).permit(:name, :occurs_at, :nickname, :organizer)
   end
 end

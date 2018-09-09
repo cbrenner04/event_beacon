@@ -20,11 +20,11 @@ RSpec.describe 'Events', type: :feature do
 
   describe 'index' do
     it 'displays events related to signed in user' do
-      expect(events_page).to have_link event.name
+      expect(events_page).to have_link event.nickname
     end
 
     it 'links to show page' do
-      events_page.select_event event.name
+      events_page.select_event event.nickname
       expect(current_path).to eq event_path(event.id)
     end
   end
@@ -33,19 +33,25 @@ RSpec.describe 'Events', type: :feature do
     before { visit event_path(event) }
 
     it 'displays links related to event' do
-      expect(event_page).to have_text event.name
+      expect(event_page).to have_text event.nickname
     end
 
     it 'links to event guests' do
-      events_page.navigate_to_guests
+      event_page.navigate_to_guests
 
       expect(current_path).to eq event_guests_path(event.id)
     end
 
     it 'links to event experiences' do
-      events_page.navigate_to_experiences
+      event_page.navigate_to_experiences
 
       expect(current_path).to eq event_experiences_path(event.id)
+    end
+
+    it 'links to send notification to all guests now' do
+      event_page.navigate_to_send_all_notification
+
+      expect(current_path).to eq new_event_notification_path(event.id)
     end
   end
 
@@ -54,6 +60,7 @@ RSpec.describe 'Events', type: :feature do
 
     it 'allows for adding event information' do
       new_event_page.set_event_name_to 'Foobar in the morning'
+      new_event_page.set_organizer_to 'Foobar'
       new_event_page.save
 
       expect(current_path).to eq events_path
@@ -64,9 +71,10 @@ RSpec.describe 'Events', type: :feature do
       new_event_page.set_event_name_to ''
       new_event_page.save
 
-      expect(new_event_page).to have_text '1 error prohibited this event ' \
+      expect(new_event_page).to have_text '2 errors prohibited this event ' \
                                           'from being saved:'
       expect(new_event_page).to have_text "Name can't be blank"
+      expect(new_event_page).to have_text "Organizer can't be blank"
     end
   end
 
@@ -74,11 +82,11 @@ RSpec.describe 'Events', type: :feature do
     before { visit edit_event_path(event) }
 
     it 'displays event' do
-      expect(page).to have_text event.name
+      expect(page).to have_text event.nickname
     end
 
     it 'allows for updating event information' do
-      edit_event_page.set_event_name_to 'Foobar in the morning'
+      edit_event_page.set_nickname_to 'Foobar in the morning'
       edit_event_page.save
 
       expect(current_path).to eq events_path

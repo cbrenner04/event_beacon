@@ -30,10 +30,30 @@ RSpec.describe Tasks::Notifier, type: :model do
     create :guests_notification, guest: guest, notification: third_notification
   end
 
+  describe '.send_to_all_now' do
+    it 'sends notifications' do
+      expect do
+        Tasks::Notifier.send_to_all_now(notification)
+      end.to change(MockSmsNotifier.messages, :count).by(1).and(
+        change(ActionMailer::Base.deliveries, :count).by(1)
+      )
+    end
+  end
+
   describe '.send_notifications' do
     it 'sends notifications for experiences that need notifying' do
       expect do
         Tasks::Notifier.send_notifications
+      end.to change(MockSmsNotifier.messages, :count).by(1).and(
+        change(ActionMailer::Base.deliveries, :count).by(1)
+      )
+    end
+  end
+
+  describe '.send_first_notification' do
+    it 'sends notifications where needed' do
+      expect do
+        Tasks::Notifier.send_first_notification(guest)
       end.to change(MockSmsNotifier.messages, :count).by(1).and(
         change(ActionMailer::Base.deliveries, :count).by(1)
       )
@@ -48,11 +68,31 @@ RSpec.describe Tasks::Notifier, type: :model do
     end
   end
 
+  describe '.send_first_sms_for' do
+    it 'sends sms message and updates guest' do
+      expect do
+        Tasks::Notifier.send_first_sms_for(guest, 'foobar')
+      end.to change(MockSmsNotifier.messages, :count).by(1).and(
+        change { guest.welcome_sms_sent_at }
+      )
+    end
+  end
+
   describe '.send_email_for' do
     it 'send email message' do
       expect(
         Tasks::Notifier.send_email_for(guest, notification)
       ).to be_a(Mail::Message)
+    end
+  end
+
+  describe '.send_first_email_for' do
+    it 'sends email message and updates guest' do
+      expect do
+        Tasks::Notifier.send_first_email_for(guest, 'foobar')
+      end.to change(ActionMailer::Base.deliveries, :count).by(1).and(
+        change { guest.welcome_email_sent_at }
+      )
     end
   end
 end

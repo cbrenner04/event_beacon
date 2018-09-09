@@ -1,0 +1,7 @@
+<% breadcrumb :new_notification, @event, @notification %>
+
+<h1>Send notification to all guests now</h1>
+
+<div class="mt-3">
+  <%= render "notifications/form", url: event_notifications_path(@event, @notification) %>
+</div>
