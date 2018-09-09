@@ -36,7 +36,7 @@ module Tasks
       logger.info "sending first sms to guest #{guest.id}"
       SmsNotifier.send_sms(number: guest.phone_number,
                            message: message)
-      guest.update_attributes(welcome_sms_sent_at: Time.zone.now)
+      guest.update(welcome_sms_sent_at: Time.zone.now)
     end
 
     def self.send_sms_for(guest, notification)
@@ -53,7 +53,7 @@ module Tasks
         subject: "You've been signed up for notifications",
         message: message
       ).deliver_now
-      guest.update_attributes(welcome_email_sent_at: Time.zone.now)
+      guest.update(welcome_email_sent_at: Time.zone.now)
     end
 
     def self.send_email_for(guest, notification)

@@ -59,7 +59,7 @@ RSpec.describe Guest, type: :model do
         it 'does not send notifications' do
           expect do
             guest.update!(first_name: 'Foobar')
-          end.to_not change { guest }
+          end.to_not(change { guest })
         end
       end
 
@@ -77,7 +77,7 @@ RSpec.describe Guest, type: :model do
           expect(guest.welcome_sms_sent_at).to be_nil
           expect do
             guest.update!(notification_category: 'text')
-          end.to change { guest.welcome_sms_sent_at }
+          end.to(change { guest.welcome_sms_sent_at })
           expect(guest.welcome_sms_sent_at).to_not be_nil
         end
       end
@@ -96,7 +96,7 @@ RSpec.describe Guest, type: :model do
           expect(guest.welcome_email_sent_at).to be_nil
           expect do
             guest.update!(notification_category: 'email')
-          end.to change { guest.welcome_email_sent_at }
+          end.to(change { guest.welcome_email_sent_at })
           expect(guest.welcome_email_sent_at).to_not be_nil
         end
       end
@@ -115,7 +115,7 @@ RSpec.describe Guest, type: :model do
           expect(guest.welcome_sms_sent_at).to be_nil
           expect do
             guest.update!(notification_category: 'both')
-          end.to change { guest.welcome_sms_sent_at }
+          end.to(change { guest.welcome_sms_sent_at })
           expect(guest.welcome_sms_sent_at).to_not be_nil
         end
       end
@@ -134,7 +134,7 @@ RSpec.describe Guest, type: :model do
           expect(guest.welcome_email_sent_at).to be_nil
           expect do
             guest.update!(notification_category: 'both')
-          end.to change { guest.welcome_email_sent_at }
+          end.to(change { guest.welcome_email_sent_at })
           expect(guest.welcome_email_sent_at).to_not be_nil
         end
       end

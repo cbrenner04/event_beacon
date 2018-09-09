@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe ConfirmationsController do
-  let(:user) { User.create(email: "foobar@example.com") }
+  let(:user) { User.create(email: 'foobar@example.com') }
 
-  before { @request.env["devise.mapping"] = Devise.mappings[:user] }
+  before { @request.env['devise.mapping'] = Devise.mappings[:user] }
 
   describe 'GET #show' do
     it 'assigns the requested user as @resource' do

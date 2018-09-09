@@ -89,15 +89,19 @@ class Guest < ApplicationRecord
     )
   end
 
+  def guest_phone_numbers
+    Guest.where.not(id: id).where(event_id: event_id).map(&:phone_number)
+  end
+
   def phone_number_validator
-    phone_numbers =
-      Guest.where.not(id: id).where(event_id: event_id).map(&:phone_number)
-    return unless phone_numbers.include?(phone_number)
-    errors.add(
-      :phone_number,
-      '- It looks like the guest shares a phone number with another guest.' \
-      ' If this is the case, please leave phone number blank.'
-    )
+    return if phone_number.blank?
+    if phone_number&.length != 10
+      errors.add(:phone_number, 'must be 10 characters')
+    end
+    return unless guest_phone_numbers.include?(phone_number)
+    errors.add(:phone_number, '- It looks like the guest shares a phone ' \
+                              'number with another guest. If this is the ' \
+                              'case, please leave phone number blank.')
   end
 
   def send_welcome_notifications
