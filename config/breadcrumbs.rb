@@ -50,6 +50,12 @@ crumb :notification do |event, experience, notification|
   parent :experiences, event
 end
 
+crumb :new_notification do |event, notification|
+  link "New #{event.nickname} Notification",
+       new_event_notification_path(event, notification)
+  parent :event, event
+end
+
 crumb :edit_notification do  |event, experience, notification|
   link "Edit #{experience.name} Notification",
        edit_event_experience_notification_path(event, experience, notification)

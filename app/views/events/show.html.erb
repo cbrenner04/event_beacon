@@ -5,4 +5,6 @@
 <div class="pt-2">
   <div><%= link_to "Guests", event_guests_path(@event) %></div>
   <div><%= link_to "Experiences", event_experiences_path(@event) %></div>
+  <hr>
+  <div><%= link_to "Send Notification to All Guests Now", new_event_notification_path(@event) %></div>
 </div>

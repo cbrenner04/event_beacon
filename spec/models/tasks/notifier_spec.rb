@@ -30,6 +30,16 @@ RSpec.describe Tasks::Notifier, type: :model do
     create :guests_notification, guest: guest, notification: third_notification
   end
 
+  describe '.send_to_all_now' do
+    it 'sends notifications' do
+      expect do
+        Tasks::Notifier.send_to_all_now(notification)
+      end.to change(MockSmsNotifier.messages, :count).by(1).and(
+        change(ActionMailer::Base.deliveries, :count).by(1)
+      )
+    end
+  end
+
   describe '.send_notifications' do
     it 'sends notifications for experiences that need notifying' do
       expect do

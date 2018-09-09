@@ -4,6 +4,9 @@ Rails.application.routes.draw do
     patch "/users/confirmation" => "confirmations#confirm"
   end
   resources :events, only: %i[index show new create edit update] do
+    resources :notifications, only: %i[new create] do
+      get :preview_email, on: :collection
+    end
     resources :experiences, only: %i[index new create edit update] do
       resources :notifications, only: %i[show edit update] do
         get :preview_email, on: :member

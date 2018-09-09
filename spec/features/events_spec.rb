@@ -37,15 +37,21 @@ RSpec.describe 'Events', type: :feature do
     end
 
     it 'links to event guests' do
-      events_page.navigate_to_guests
+      event_page.navigate_to_guests
 
       expect(current_path).to eq event_guests_path(event.id)
     end
 
     it 'links to event experiences' do
-      events_page.navigate_to_experiences
+      event_page.navigate_to_experiences
 
       expect(current_path).to eq event_experiences_path(event.id)
+    end
+
+    it 'links to send notification to all guests now' do
+      event_page.navigate_to_send_all_notification
+
+      expect(current_path).to eq new_event_notification_path(event.id)
     end
   end
 

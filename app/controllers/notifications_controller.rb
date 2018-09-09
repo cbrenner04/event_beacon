@@ -2,6 +2,22 @@
 
 # notifications controller
 class NotificationsController < ApplicationController
+  def new
+    @event = Event.find(params[:event_id])
+    @notification = Notification.new(sms_body: '', email_body: '')
+  end
+
+  def create
+    @event = Event.find(params[:event_id])
+    @notification = experience.build_notification(notification_params)
+    if @notification.save
+      Tasks::Notifier.send_to_all_now(@notification)
+      redirect_to event_path(@event), notice: 'Sent successfully.'
+    else
+      render :new
+    end
+  end
+
   def show
     set_instance_variables
   end
@@ -36,5 +52,16 @@ class NotificationsController < ApplicationController
     @event = @experience.event
     @notification = Notification.find(params[:id])
     @guests_notifications = @notification.guests_notifications
+  end
+
+  def experience
+    # create experience and set it beyond the time needed for next nofitication
+    ten_hours_ago = Time.zone.now - 10 * 60 * 60
+    @experience ||= Experience.create!(
+      name: "Send now! #{Time.zone.now}",
+      occurs_at: ten_hours_ago,
+      notification_offset: 60,
+      event: @event
+    )
   end
 end

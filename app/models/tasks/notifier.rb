@@ -6,6 +6,15 @@ require 'notification_boilerplate'
 module Tasks
   # sends notification to guests
   class Notifier
+    def self.send_to_all_now(notification)
+      notification.experience.event.guests.each do |guest|
+        nc = guest.notification_category
+        next if nc.nil?
+        send_sms_for(guest, notification) if %w[text both].include? nc
+        send_email_for(guest, notification) if %w[email both].include? nc
+      end
+    end
+
     def self.send_notifications
       notifications = Notification.all
       notifications.each do |notification|
