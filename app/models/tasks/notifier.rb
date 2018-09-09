@@ -62,7 +62,7 @@ module Tasks
         guest_email: guest.email,
         subject: "You've been signed up for notifications",
         message: message
-      ).deliver_later
+      ).deliver_now
       guest.update(welcome_email_sent_at: Time.zone.now)
     end
 
@@ -76,7 +76,7 @@ module Tasks
                   "notification #{notification.id}"
       NotificationMailer.email(guest_email: guest.email,
                                subject: subject,
-                               message: notification.email_body).deliver_later
+                               message: notification.email_body).deliver_now
     end
 
     def self.logger

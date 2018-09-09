@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Tasks::Notifier, type: :model do
-  include ActiveJob::TestHelper
-
   let(:event) { create :event }
   let(:guest) { create :guest, event: event, notification_category: 'both' }
   let(:experience) do
@@ -37,8 +35,7 @@ RSpec.describe Tasks::Notifier, type: :model do
       expect do
         Tasks::Notifier.send_to_all_now(notification)
       end.to change(MockSmsNotifier.messages, :count).by(1).and(
-        change(ActionMailer::DeliveryJob.queue_adapter.enqueued_jobs, :count)
-        .by(1)
+        change(ActionMailer::Base.deliveries, :count).by(1)
       )
     end
   end
@@ -48,8 +45,7 @@ RSpec.describe Tasks::Notifier, type: :model do
       expect do
         Tasks::Notifier.send_notifications
       end.to change(MockSmsNotifier.messages, :count).by(1).and(
-        change(ActionMailer::DeliveryJob.queue_adapter.enqueued_jobs, :count)
-        .by(1)
+        change(ActionMailer::Base.deliveries, :count).by(1)
       )
     end
   end
@@ -59,8 +55,7 @@ RSpec.describe Tasks::Notifier, type: :model do
       expect do
         Tasks::Notifier.send_first_notification(guest)
       end.to change(MockSmsNotifier.messages, :count).by(1).and(
-        change(ActionMailer::DeliveryJob.queue_adapter.enqueued_jobs, :count)
-        .by(1)
+        change(ActionMailer::Base.deliveries, :count).by(1)
       )
     end
   end
@@ -87,7 +82,7 @@ RSpec.describe Tasks::Notifier, type: :model do
     it 'send email message' do
       expect(
         Tasks::Notifier.send_email_for(guest, notification)
-      ).to be_a(ActionMailer::DeliveryJob)
+      ).to be_a(Mail::Message)
     end
   end
 
@@ -95,9 +90,8 @@ RSpec.describe Tasks::Notifier, type: :model do
     it 'sends email message and updates guest' do
       expect do
         Tasks::Notifier.send_first_email_for(guest, 'foobar')
-      end.to(
-        change(ActionMailer::DeliveryJob.queue_adapter.enqueued_jobs, :count)
-        .by(1).and(change { guest.welcome_email_sent_at })
+      end.to change(ActionMailer::Base.deliveries, :count).by(1).and(
+        change { guest.welcome_email_sent_at }
       )
     end
   end
