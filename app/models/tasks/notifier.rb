@@ -6,25 +6,26 @@ require 'notification_boilerplate'
 module Tasks
   # sends notification to guests
   class Notifier
-    def self.send_to_all_now(notification)
-      notification.experience.event.guests.each do |guest|
+    def self.send_the_notifications(guests, notification, default = true)
+      guests.each do |guest|
         nc = guest.notification_category
         next if nc.nil?
         send_sms_for(guest, notification) if %w[text both].include? nc
-        send_email_for(guest, notification) if %w[email both].include? nc
+        if %w[email both].include? nc
+          send_email_for(guest, notification, default)
+        end
       end
+    end
+
+    def self.send_to_all_now(notification)
+      send_the_notifications(notification.experience.event.guests, notification)
     end
 
     def self.send_notifications
       notifications = Notification.all
       notifications.each do |notification|
         next unless notification.experience.needs_notifying?
-        notification.guests.each do |guest|
-          nc = guest.notification_category
-          next if nc.nil?
-          send_sms_for(guest, notification) if %w[text both].include? nc
-          send_email_for(guest, notification) if %w[email both].include? nc
-        end
+        send_the_notifications(notification.guests, notification, false)
       end
     end
 
@@ -61,18 +62,21 @@ module Tasks
         guest_email: guest.email,
         subject: "You've been signed up for notifications",
         message: message
-      ).deliver_now
+      ).deliver_later
       guest.update(welcome_email_sent_at: Time.zone.now)
     end
 
-    def self.send_email_for(guest, notification)
+    def self.send_email_for(guest, notification, default_subject = true)
+      subject = if default_subject
+                  'You have a new notification'
+                else
+                  "#{notification.experience.name} is happening soon"
+                end
       logger.info "sending email to guest #{guest.id} for " \
                   "notification #{notification.id}"
-      NotificationMailer.email(
-        guest_email: guest.email,
-        subject: "#{notification.experience.name} is happening soon",
-        message: notification.email_body
-      ).deliver_now
+      NotificationMailer.email(guest_email: guest.email,
+                               subject: subject,
+                               message: notification.email_body).deliver_later
     end
 
     def self.logger
